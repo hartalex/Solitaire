@@ -5,11 +5,14 @@ using UnityEngine;
 
 namespace Solitaire
 {
-    public class Pile: MonoBehaviour
+    
+	// End = Top of Pile,  Start = Bottom of Pile
+	public class Pile: MonoBehaviour
     {
-		
+		public GameObject cardprefab = null;
         private Card[] cards;
         private int size = 0;
+		private float cardThickness  = 1f;
 
         public Pile()
         {
@@ -22,11 +25,19 @@ namespace Solitaire
 
         public void AddCardToEnd(Card card)
         {
+			
+
             cards[size] = card;
 			// Sets display
 			card.transform.SetParent (this.transform);
 			card.transform.localPosition = new Vector3 ();
+			for (int i = size; i >= 0; i--)
+			{
+				cards[i].transform.localPosition = new Vector3 (0,0,(size-i) * cardThickness);
+			}
             size++;
+		
+
         }
 
         public void AddCardToStart(Card card)
@@ -35,10 +46,11 @@ namespace Solitaire
             {
                 cards[i] = cards[i-1];
             }
-            cards[0] = card;
+			size++;
+			cards[0] = card;
 			card.transform.SetParent (this.transform);
-			card.transform.localPosition = new Vector3 ();
-            size++;
+			card.transform.localPosition = new Vector3 (0,0,size * cardThickness);
+            
         }
 
         public Card RemoveCardFromEnd()
@@ -46,8 +58,13 @@ namespace Solitaire
             Card retval = GetCardFromEnd();
             if (retval != null)
             {
+				
                 size--;
 				retval.transform.SetParent (null);
+				for (int i = size; i >= 0; i--)
+				{
+					cards[i].transform.localPosition = new Vector3 (0,0,(size -i) * cardThickness);
+				}
             }
             return retval;
         }
@@ -73,6 +90,7 @@ namespace Solitaire
                 for (int i = 0; i < size; i++)
                 {
                     cards[i] = cards[i + 1];
+
                 }
                 
             }
@@ -120,20 +138,30 @@ namespace Solitaire
 
         public void Order()
         {
-            Array.Sort(cards);
+			if (size > 0) {
+				Array.Sort (cards);
+				for (int i = size; i >= 0; i--) {
+					cards [i].transform.localPosition = new Vector3 (0, 0, (size -1 - i) * cardThickness);
+				}
+			}
         }
 
         public void Shuffle()
         {
-            int n = size;
-            System.Random rng = new System.Random();
-            while (n > 1)
-            {
-                int k = rng.Next(n--);
-                Card temp = cards[n];
-                cards[n] = cards[k];
-                cards[k] = temp;
-            }
+			if (size > 0) {
+				int n = size;
+				System.Random rng = new System.Random ();
+				while (n > 1) {
+					int k = rng.Next (n--);
+					Card temp = cards [n];
+					cards [n] = cards [k];
+					cards [k] = temp;
+				}
+				for (int i = size-1; i >= 0; i--) {
+				
+					cards [i].transform.localPosition = new Vector3 (0, 0, (size-1 - i) * cardThickness);
+				}
+			}
         }
 
         public void AddPile(Pile pile)
@@ -144,5 +172,16 @@ namespace Solitaire
                 this.AddCardToEnd(card);
             }
         }
+
+		protected Card CreateCard(Suit suit, Rank rank) {
+			Card retval = null;
+			GameObject gameObjectCard = GameObject.Instantiate(cardprefab);
+
+			retval = gameObjectCard.GetComponent<Card> ();
+			retval.suit = suit;
+			retval.rank = rank;
+			gameObjectCard.name = retval.ToShortName ();
+			return retval;
+		}
     }
 }

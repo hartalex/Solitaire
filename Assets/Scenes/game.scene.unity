@@ -141,6 +141,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   card: {fileID: 1691690255}
   pile: {fileID: 190171761}
+  deck: {fileID: 63264115}
 --- !u!4 &27479746
 Transform:
   m_ObjectHideFlags: 0
@@ -244,6 +245,12 @@ Prefab:
     - target: {fileID: 114340286651184638, guid: 2b037b0bb60953e448f76dc611599b48,
         type: 2}
       propertyPath: CardPrefab
+      value: 
+      objectReference: {fileID: 1759547555911772, guid: 5105ae4a42039a946abc0f9075f911a9,
+        type: 2}
+    - target: {fileID: 114340286651184638, guid: 2b037b0bb60953e448f76dc611599b48,
+        type: 2}
+      propertyPath: cardprefab
       value: 
       objectReference: {fileID: 1759547555911772, guid: 5105ae4a42039a946abc0f9075f911a9,
         type: 2}

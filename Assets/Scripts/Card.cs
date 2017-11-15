@@ -92,6 +92,14 @@ namespace Solitaire
             return retval;
         }
 
+		public static String[] shortSuits = {"D","C","H","S" };
+
+		public static String[] shortRanks = {"A","2","3","4", "5","6","7", "8","9","X","J","Q","K" };
+
+		public String ToShortName(){
+			return shortRanks[(int)this.rank] + shortSuits[(int)this.suit];
+		}
+
         public bool facingUp
         {
             get

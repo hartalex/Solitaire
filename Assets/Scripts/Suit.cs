@@ -12,4 +12,6 @@ namespace Solitaire
         Heart,
         Spade
     }
+
+
 }

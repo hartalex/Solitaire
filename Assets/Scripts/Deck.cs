@@ -7,7 +7,7 @@ namespace Solitaire
 {
     public class Deck : Pile 
     {
-		public GameObject cardprefab = null;
+		
         public Deck() : base()
 		{
 		}
@@ -67,16 +67,9 @@ namespace Solitaire
             this.AddCardToEnd(CreateCard(Suit.Spade, Rank.Jack));
             this.AddCardToEnd(CreateCard(Suit.Spade, Rank.Queen));
             this.AddCardToEnd(CreateCard(Suit.Spade, Rank.King));
+			this.Shuffle ();
         }
 
-		private Card CreateCard(Suit suit, Rank rank) {
-			Card retval = null;
-			GameObject gameObjectCard = GameObject.Instantiate(cardprefab);
-			retval = gameObjectCard.GetComponent<Card> ();
-			retval.suit = suit;
-			retval.rank = rank;
 
-			return retval;
-		}
     }
 }
