@@ -1,23 +1,31 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-
+using UnityEngine;
 
 namespace Solitaire
 {
-    public class Pile
+    public class Pile: MonoBehaviour
     {
-        public Card[] cards;
-        public int size = 0;
+		
+        private Card[] cards;
+        private int size = 0;
 
         public Pile()
         {
-            cards = new Card[52];
+			cards = new Card[52];
         }
+
+		public int GetSize() {
+			return size;
+		}
 
         public void AddCardToEnd(Card card)
         {
             cards[size] = card;
+			// Sets display
+			card.transform.SetParent (this.transform);
+			card.transform.localPosition = new Vector3 ();
             size++;
         }
 
@@ -28,6 +36,8 @@ namespace Solitaire
                 cards[i] = cards[i-1];
             }
             cards[0] = card;
+			card.transform.SetParent (this.transform);
+			card.transform.localPosition = new Vector3 ();
             size++;
         }
 
@@ -37,6 +47,7 @@ namespace Solitaire
             if (retval != null)
             {
                 size--;
+				retval.transform.SetParent (null);
             }
             return retval;
         }
@@ -57,6 +68,7 @@ namespace Solitaire
             if (size > 0)
             {
                 retval = cards[0];
+				retval.transform.SetParent (null);
                 size--;
                 for (int i = 0; i < size; i++)
                 {
@@ -114,7 +126,7 @@ namespace Solitaire
         public void Shuffle()
         {
             int n = size;
-            Random rng = new Random();
+            System.Random rng = new System.Random();
             while (n > 1)
             {
                 int k = rng.Next(n--);

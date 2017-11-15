@@ -37,7 +37,7 @@ namespace Solitaire
 
         public static void PrintPile(Pile pile)
         {
-            for (int i = 0; i < pile.size; i++)
+			for (int i = 0; i < pile.GetSize(); i++)
             {
                 ICard card = pile.GetCard(i);
                 //Debug.WriteLine(card);

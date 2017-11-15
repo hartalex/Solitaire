@@ -1,14 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using UnityEngine;
 
 namespace Solitaire
 {
-    public class Card : ICard, IComparable<ICard>
+	[Serializable]
+	public class Card : MonoBehaviour, ICard, IComparable<ICard>
     {
+		[SerializeField]
         private Suit mySuit;
+		[SerializeField]
         private Rank myRank;
+		[SerializeField]
         private bool myFacingUp;
+
+		public void Start() {
+			updateTiling ();
+		}
 
         public Card(Suit suit, Rank rank, bool facingUp = false)
         {
@@ -36,9 +45,30 @@ namespace Solitaire
             }
             set
             {
-                mySuit = value;
+				mySuit = value;
+				updateTiling ();
             }
         }
+
+		private void updateTiling() {
+			float suitOffset = 0;
+			float rankOffset = 0;
+			float suitTileSize = 0.25f;
+			float rankTileSize = 0.07692f;
+
+			if (this.suit == Suit.Heart) {
+				suitOffset = 3 * suitTileSize;
+			} else if (this.suit == Suit.Spade) {
+				suitOffset = 2 * suitTileSize;
+			} else if (this.suit == Suit.Diamond) {
+				suitOffset = 1 * suitTileSize;
+			} else {
+				suitOffset = 0 * suitTileSize;
+			}
+			rankOffset = (int)this.rank * rankTileSize;
+
+			this.gameObject.GetComponent<MeshRenderer> ().material.SetTextureOffset ("_MainTex", new Vector2 (rankOffset, suitOffset));
+		}
 
         public Rank rank
         {
@@ -49,6 +79,7 @@ namespace Solitaire
             set
             {
                 myRank = value;
+				updateTiling ();
             }
         }
 

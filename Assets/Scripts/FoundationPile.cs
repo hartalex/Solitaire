@@ -16,7 +16,7 @@ namespace Solitaire
         public bool AddCard(Card card)
         {
             bool retval = false;
-            if (this.size == 0)
+			if (this.GetSize() == 0)
             {
                 // Accept any Ace first
                 if (card.rank == Rank.Ace)
