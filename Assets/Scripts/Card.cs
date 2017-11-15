@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
-namespace ConsoleApplication1
+namespace Solitaire
 {
     public class Card : ICard, IComparable<ICard>
     {

@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
-namespace ConsoleApplication1
+
+namespace Solitaire
 {
     class Program
     {
@@ -21,7 +19,7 @@ namespace ConsoleApplication1
             for (int i = 0; i < numSuits; i++)
             {
                 foundationPiles[i] = new FoundationPile();
-                Debug.WriteLine("Foundation Pile " + (i + 1));
+                //Debug.WriteLine("Foundation Pile " + (i + 1));
                 PrintPile(foundationPiles[i]);
             }
             
@@ -31,7 +29,7 @@ namespace ConsoleApplication1
                 tableauPiles[i] = new Pile();
                 tableauPiles[i].AddPile(deck.GetCardsFromStart(i + 1));
                 tableauPiles[i].GetCardFromEnd().facingUp = true;
-                Debug.WriteLine("Tableau Pile " + (i + 1));
+              //  Debug.WriteLine("Tableau Pile " + (i + 1));
                 PrintPile(tableauPiles[i]);
             }
 
@@ -42,7 +40,7 @@ namespace ConsoleApplication1
             for (int i = 0; i < pile.size; i++)
             {
                 ICard card = pile.GetCard(i);
-                Debug.WriteLine(card);
+                //Debug.WriteLine(card);
             }
         }
     }
