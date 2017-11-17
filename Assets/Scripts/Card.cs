@@ -51,7 +51,7 @@ namespace Solitaire
         }
 
 		private void updateTiling() {
-			float suitOffset = 0;
+		/*	float suitOffset = 0;
 			float rankOffset = 0;
 			float suitTileSize = 0.25f;
 			float rankTileSize = 0.07692f;
@@ -67,7 +67,8 @@ namespace Solitaire
 			}
 			rankOffset = (int)this.rank * rankTileSize;
 
-			this.gameObject.GetComponent<MeshRenderer> ().material.SetTextureOffset ("_MainTex", new Vector2 (rankOffset, suitOffset));
+			this.gameObject.GetComponent<MeshRenderer> ().materials[2].SetTextureOffset ("_MainTex", new Vector2 (rankOffset, suitOffset));
+			*/
 		}
 
         public Rank rank
