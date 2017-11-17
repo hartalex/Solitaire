@@ -15,9 +15,7 @@ public class GameState : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-			if (pile.GetSize () == 0) {
-				pile.AddCardToEnd (card);
-			}
+			
 	}
 }
 }
