@@ -11,8 +11,8 @@ namespace Solitaire
     {
 		public GameObject cardprefab = null;
         private Card[] cards;
-        private int size = 0;
-		private float cardThickness  = 1f;
+		protected int size = 0;
+		protected float cardThickness  = 2f;
 
         public Pile()
         {
@@ -33,7 +33,7 @@ namespace Solitaire
 			card.transform.localPosition = new Vector3 ();
 			for (int i = size; i >= 0; i--)
 			{
-				cards[i].transform.localPosition = new Vector3 (0,0,(size-i) * cardThickness);
+				cards[i].transform.localPosition = new Vector3 (0,cards[i].transform.localPosition.y,-(size-i) * cardThickness);
 			}
             size++;
 		
@@ -49,7 +49,7 @@ namespace Solitaire
 			size++;
 			cards[0] = card;
 			card.transform.SetParent (this.transform);
-			card.transform.localPosition = new Vector3 (0,0,size * cardThickness);
+			card.transform.localPosition = new Vector3 (0,0,-size * cardThickness);
             
         }
 
@@ -63,7 +63,7 @@ namespace Solitaire
 				retval.transform.SetParent (null);
 				for (int i = size; i >= 0; i--)
 				{
-					cards[i].transform.localPosition = new Vector3 (0,0,(size -i) * cardThickness);
+					cards[i].transform.localPosition = new Vector3 (0,cards[i].transform.localPosition.y,-(size -i) * cardThickness);
 				}
             }
             return retval;
@@ -90,7 +90,7 @@ namespace Solitaire
                 for (int i = 0; i < size; i++)
                 {
                     cards[i] = cards[i + 1];
-
+				
                 }
                 
             }
@@ -141,7 +141,7 @@ namespace Solitaire
 			if (size > 0) {
 				Array.Sort (cards);
 				for (int i = size; i >= 0; i--) {
-					cards [i].transform.localPosition = new Vector3 (0, 0, (size -1 - i) * cardThickness);
+					cards [i].transform.localPosition = new Vector3 (0, cards[i].transform.localPosition.y, -(size -1 - i) * cardThickness);
 				}
 			}
         }
@@ -159,7 +159,7 @@ namespace Solitaire
 				}
 				for (int i = size-1; i >= 0; i--) {
 				
-					cards [i].transform.localPosition = new Vector3 (0, 0, (size-1 - i) * cardThickness);
+					cards [i].transform.localPosition = new Vector3 (0, cards[i].transform.localPosition.y, -(size-1 - i) * cardThickness);
 				}
 			}
         }
@@ -173,14 +173,18 @@ namespace Solitaire
             }
         }
 
-		protected Card CreateCard(Suit suit, Rank rank) {
+		protected Card CreateCard(Suit suit, Rank rank, Material material) {
 			Card retval = null;
 			GameObject gameObjectCard = GameObject.Instantiate(cardprefab);
 
 			retval = gameObjectCard.GetComponent<Card> ();
 			retval.suit = suit;
 			retval.rank = rank;
+			MeshRenderer mr = gameObjectCard.GetComponent<MeshRenderer> ();
+			Material[] newMaterials = { mr.materials[0], mr.materials[1], material};
+			mr.materials = newMaterials;
 			gameObjectCard.name = retval.ToShortName ();
+			gameObjectCard.transform.localPosition = new Vector3 (0,0,-size * cardThickness);
 			return retval;
 		}
     }

@@ -15,6 +15,7 @@ namespace Solitaire
 		[SerializeField]
         private bool myFacingUp;
 
+
 		public void Start() {
 			updateTiling ();
 		}
