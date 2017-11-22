@@ -15,9 +15,14 @@ namespace Solitaire
 		[SerializeField]
         private bool myFacingUp;
 
+		private DragNDrop dnd = null;
+
 
 		public void Start() {
-			updateTiling ();
+			dnd = GetComponent<DragNDrop> ();
+			if (dnd == null) {
+				throw new MissingComponentException ("DragNDrop");
+			}
 		}
 
         public Card(Suit suit, Rank rank, bool facingUp = false)
@@ -47,30 +52,10 @@ namespace Solitaire
             set
             {
 				mySuit = value;
-				updateTiling ();
+			
             }
         }
-
-		private void updateTiling() {
-		/*	float suitOffset = 0;
-			float rankOffset = 0;
-			float suitTileSize = 0.25f;
-			float rankTileSize = 0.07692f;
-
-			if (this.suit == Suit.Heart) {
-				suitOffset = 3 * suitTileSize;
-			} else if (this.suit == Suit.Spade) {
-				suitOffset = 2 * suitTileSize;
-			} else if (this.suit == Suit.Diamond) {
-				suitOffset = 1 * suitTileSize;
-			} else {
-				suitOffset = 0 * suitTileSize;
-			}
-			rankOffset = (int)this.rank * rankTileSize;
-
-			this.gameObject.GetComponent<MeshRenderer> ().materials[2].SetTextureOffset ("_MainTex", new Vector2 (rankOffset, suitOffset));
-			*/
-		}
+			
 
         public Rank rank
         {
@@ -81,7 +66,7 @@ namespace Solitaire
             set
             {
                 myRank = value;
-				updateTiling ();
+			
             }
         }
 
@@ -111,6 +96,14 @@ namespace Solitaire
             set
             {
                 myFacingUp = value;
+				if (dnd != null) {
+					dnd.enabled = myFacingUp;
+				}
+				if (myFacingUp == true) {
+					this.transform.localRotation = Quaternion.Euler( new Vector3 (-90,180,0));
+						} else {
+					this.transform.localRotation = Quaternion.Euler( new Vector3 (-90,0,0));
+						}
             }
         }
 

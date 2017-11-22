@@ -28,7 +28,7 @@ namespace Solitaire
             }
             else
             {
-                Card TopCard = this.GetCardFromEnd();
+                Card TopCard = this.GetCardFromTop();
                 if (TopCard.suit == card.suit && (int)TopCard.rank == ((int)card.rank)-1)
                 {
                     card.facingUp = true;

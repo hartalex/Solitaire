@@ -6,11 +6,11 @@ using UnityEngine;
 namespace Solitaire
 {
     
-	// End = Top of Pile,  Start = Bottom of Pile
+	// Top = Top of Pile,  Top = Bottom of Pile
 	public class Pile: MonoBehaviour
     {
 		public GameObject cardprefab = null;
-        private Card[] cards;
+        protected Card[] cards;
 		protected int size = 0;
 		protected float cardThickness  = 2f;
 
@@ -23,7 +23,7 @@ namespace Solitaire
 			return size;
 		}
 
-        public void AddCardToEnd(Card card)
+        public void AddCardToTop(Card card)
         {
 			
 
@@ -40,7 +40,7 @@ namespace Solitaire
 
         }
 
-        public void AddCardToStart(Card card)
+        public void AddCardToBottom(Card card)
         {
             for (int i = size; i > 0; i--)
             {
@@ -53,9 +53,9 @@ namespace Solitaire
             
         }
 
-        public Card RemoveCardFromEnd()
+        public Card RemoveCardFromTop()
         {
-            Card retval = GetCardFromEnd();
+            Card retval = GetCardFromTop();
             if (retval != null)
             {
 				
@@ -69,7 +69,7 @@ namespace Solitaire
             return retval;
         }
 
-        public Card GetCardFromEnd()
+        public Card GetCardFromTop()
         {
             Card retval = null;
             if (size > 0)
@@ -79,7 +79,7 @@ namespace Solitaire
             return retval;
         }
 
-        public Card RemoveCardFromStart()
+        public Card RemoveCardFromBottom()
         {
             Card retval = null;
             if (size > 0)
@@ -106,27 +106,27 @@ namespace Solitaire
             return retval;
         }
 
-        public Pile GetCardsFromStart(int size)
+        public Pile GetCardsFromBottom(int size)
         {
             Pile pile = new Pile();
             for (int i = 0; i < size; i++)
             {
-                pile.AddCardToEnd(this.RemoveCardFromStart());
+                pile.AddCardToTop(this.RemoveCardFromBottom());
             }
             return pile;
         }
 
-        public Pile GetCardsFromEnd(int size)
+        public Pile GetCardsFromTop(int size)
         {
             Pile pile = new Pile();
             for (int i = 0; i < size; i++)
             {
-                pile.AddCardToEnd(this.RemoveCardFromEnd());
+                pile.AddCardToTop(this.RemoveCardFromTop());
             }
             return pile;
         }
 
-        public Card GetCardFromStart()
+        public Card GetCardFromBottom()
         {
             Card retval = null;
             if (size > 0)
@@ -169,7 +169,7 @@ namespace Solitaire
             for (int i = 0; i < pile.size; i++)
             {
                 Card card = pile.GetCard(i);
-                this.AddCardToEnd(card);
+                this.AddCardToTop(card);
             }
         }
 
@@ -180,6 +180,7 @@ namespace Solitaire
 			retval = gameObjectCard.GetComponent<Card> ();
 			retval.suit = suit;
 			retval.rank = rank;
+			retval.facingUp = false;
 			MeshRenderer mr = gameObjectCard.GetComponent<MeshRenderer> ();
 			Material[] newMaterials = { mr.materials[0], mr.materials[1], material};
 			mr.materials = newMaterials;

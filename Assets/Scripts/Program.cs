@@ -27,8 +27,8 @@ namespace Solitaire
 
             for (int i = 0; i < 7; i++) {
                 tableauPiles[i] = new Pile();
-                tableauPiles[i].AddPile(deck.GetCardsFromStart(i + 1));
-                tableauPiles[i].GetCardFromEnd().facingUp = true;
+                tableauPiles[i].AddPile(deck.GetCardsFromBottom(i + 1));
+                tableauPiles[i].GetCardFromTop().facingUp = true;
               //  Debug.WriteLine("Tableau Pile " + (i + 1));
                 PrintPile(tableauPiles[i]);
             }

@@ -60,9 +60,9 @@ public class DragNDrop : MonoBehaviour
 				Card card = GetComponent<Card> ();
 				if (destPile != null && card != null) {
 						if (srcPile != null) {
-							srcPile.RemoveCardFromEnd();
+							srcPile.RemoveCardFromTop();
 						}
-						destPile.AddCardToEnd (card);
+						destPile.AddCardToTop (card);
 				}
 				target = null;
 			}
