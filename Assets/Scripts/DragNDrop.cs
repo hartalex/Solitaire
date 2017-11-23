@@ -56,27 +56,29 @@ public class DragNDrop : MonoBehaviour
 			_mouseState = false;
 			RaycastHit hitInfo;
 			target = GetClickedObject(out hitInfo);
-				if (target != null) {
+				if (target != null && carringCard != null) {
 					Pile destPile = target.GetComponent<Pile> ();
-					Pile srcPile = target.GetComponentInParent<Pile> ();
+					Pile srcPile = 	carringCard.GetComponentInParent<Pile> ();
 				
-					Card card = GetComponent<Card> ();
-					if (destPile != null && card != null) {
+					Card card = carringCard;
+					if (destPile != null && card != null && srcPile != null) {
+
+						// Foundation Piles
 						FoundationPile fp = destPile.GetComponent<FoundationPile> ();
 						if (fp != null) {
 							if (fp.AddCard (card)) {
-								if (srcPile != null) {
-									srcPile.RemoveCardFromTop ();
-								}
+							    srcPile.RemoveCardFromTop ();
 								carringCard = null;
 							} else {
-								ReturnToPreviousPosition (target);
+								ReturnToPreviousPosition (carringCard.gameObject);
+								carringCard = null;
 							}
 						}
 
 						// TableauPiles
 					} else {
-						ReturnToPreviousPosition (target);
+						ReturnToPreviousPosition (carringCard.gameObject);
+						carringCard = null;
 					}
 				
 					target = null;
@@ -84,12 +86,7 @@ public class DragNDrop : MonoBehaviour
 					ReturnToPreviousPosition (carringCard.gameObject);
 					carringCard = null;
 				}
-			
-			Collider col = GetComponent<Collider>();
-			if (col != null)
-			{
-				col.enabled = true;
-			}
+
 		}
 		if (_mouseState)
 		{
@@ -120,9 +117,16 @@ public class DragNDrop : MonoBehaviour
 	}
 
 		private void ReturnToPreviousPosition(GameObject target) {
+			if (target != null) {
 			target.transform.localPosition = origin;
 			target.transform.localRotation = originRotation;
 			target.transform.localScale = originScale;
+
+				Collider col = target.GetComponent<Collider> ();
+				if (col != null) {
+					col.enabled = true;
+				}
+			}
 		
 		}
 }

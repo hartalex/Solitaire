@@ -11,6 +11,12 @@ namespace Solitaire {
 		}
 
 
+		public bool AddCard(Card card)
+		{
+			bool retval = false;
+			return retval;
+		}
+
 		public void AddCardToTop(Card card)
 		{
 			base.AddCardToTop (card);
