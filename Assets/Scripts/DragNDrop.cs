@@ -13,6 +13,7 @@ public class DragNDrop : MonoBehaviour
 	private Quaternion originRotation;
 	private Vector3 originScale;
 	private Card carringCard;
+		public Pile stockPile;
 
 	// Use this for initialization
 	void Start()
@@ -39,55 +40,101 @@ public class DragNDrop : MonoBehaviour
 				Card card = target.GetComponent<Card>();
 				if (card != null)
 				{
-					_mouseState = true;
-					screenSpace = Camera.main.WorldToScreenPoint(target.transform.position);
-					offset = target.transform.position - Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, screenSpace.z));
-					Collider col = target.GetComponent<Collider>();
-					carringCard = card;
-					if (col != null)
-					{
-						col.enabled = false;
-					}
+						if (card.facingUp) { // only pickup face up cards
+				
+							_mouseState = true;
+							screenSpace = Camera.main.WorldToScreenPoint (target.transform.position);
+
+							offset = target.transform.position - Camera.main.ScreenToWorldPoint (new Vector3 (Input.mousePosition.x, Input.mousePosition.y, screenSpace.z));
+							Collider col = target.GetComponent<Collider> ();
+							carringCard = card;
+							if (col != null) {
+								col.enabled = false;
+							}
+						}
 				}
 			}
 		}
-			if (Input.GetMouseButtonUp(0) || (Input.touchCount > 0 && Input.GetTouch (0).phase == TouchPhase.Ended))
-		{
-			_mouseState = false;
-			RaycastHit hitInfo;
-			target = GetClickedObject(out hitInfo);
-				if (target != null && carringCard != null) {
-					Pile destPile = target.GetComponent<Pile> ();
-					Pile srcPile = 	carringCard.GetComponentInParent<Pile> ();
+			if (_mouseState) {
+				if (Input.GetMouseButtonUp (0) || (Input.touchCount > 0 && Input.GetTouch (0).phase == TouchPhase.Ended)) {
+					_mouseState = false;
+					RaycastHit hitInfo;
+					target = GetClickedObject (out hitInfo);
+					if (target != null && carringCard != null) {
+						Pile destPile = target.GetComponent<Pile> ();
+						Pile srcPile = carringCard.GetComponentInParent<Pile> ();
 				
-					Card card = carringCard;
-					if (destPile != null && card != null && srcPile != null) {
+						Card card = carringCard;
+						if (destPile != null && card != null && srcPile != null) {
+							bool handled = false;
+							// Foundation Piles
+							FoundationPile fp = destPile.GetComponent<FoundationPile> ();
+							if (fp != null) {
+								if (fp.AddCard (card)) {
+									srcPile.RemoveCardFromTop ();
 
-						// Foundation Piles
-						FoundationPile fp = destPile.GetComponent<FoundationPile> ();
-						if (fp != null) {
-							if (fp.AddCard (card)) {
-							    srcPile.RemoveCardFromTop ();
-								carringCard = null;
-							} else {
+									carringCard = null;
+								} else {
+									ReturnToPreviousPosition (carringCard.gameObject);
+									carringCard = null;
+								}
+								handled = true;
+							}
+
+							// TableauPiles
+							TableauPile tp = destPile.GetComponent<TableauPile> ();
+							if (tp != null) {
+								if (tp.GetSize () == 0 && card.rank == Rank.King) {
+									srcPile.RemoveCardFromTop ();
+									tp.AddCardToTop (card);
+									handled = true;
+								}
+
+							}
+
+							if (!handled) {
 								ReturnToPreviousPosition (carringCard.gameObject);
 								carringCard = null;
 							}
-						}
 
-						// TableauPiles
-					} else {
+
+						} else {
+							ReturnToPreviousPosition (carringCard.gameObject);
+							carringCard = null;
+						}
+				
+						target = null;
+					} else if (carringCard != null) {
 						ReturnToPreviousPosition (carringCard.gameObject);
 						carringCard = null;
 					}
-				
-					target = null;
-				} else if (carringCard != null) {
-					ReturnToPreviousPosition (carringCard.gameObject);
-					carringCard = null;
-				}
 
-		}
+				}
+			} else {
+				// No Card just a tap
+				if (Input.GetMouseButtonUp (0) || (Input.touchCount > 0 && Input.GetTouch (0).phase == TouchPhase.Ended)) {
+					RaycastHit hitInfo;
+					target = GetClickedObject (out hitInfo);
+					if (target != null) {
+						Deck deck = target.GetComponentInParent<Deck>();
+						if (deck != null) {
+							Card deckCard = deck.RemoveCardFromTop ();
+							if (deckCard == null) {
+								// Move Stock Pile to Deck
+								Card stockCard = stockPile.RemoveCardFromTop ();
+								while(stockCard != null) {
+									stockCard.facingUp = false;
+									deck.AddCardToTop (stockCard);
+									stockCard = stockPile.RemoveCardFromTop ();
+								}
+							} else {
+								deckCard.facingUp = true;
+								stockPile.AddCardToTop (deckCard);
+							}
+						}
+					}
+				}
+			}
 		if (_mouseState)
 		{
 			//keep track of the mouse position

@@ -22,7 +22,7 @@ namespace Solitaire {
 			base.AddCardToTop (card);
 
 			for (int i = 0; i < size; i++) {
-				cards[i].transform.localPosition = new Vector3 (0, -i * 0.1f,  -i * cardThickness);
+				cards[i].transform.localPosition = new Vector3 (0, -i * 0.1f,  -(i+1) * cardThickness);
 			}
 
 		}
