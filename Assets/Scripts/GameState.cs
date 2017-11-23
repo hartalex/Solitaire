@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace Solitaire {
 public class GameState : MonoBehaviour {
@@ -31,5 +32,9 @@ public class GameState : MonoBehaviour {
 			initialized = true;
 		}
 	}
+
+		public void Restart() {
+			SceneManager.LoadScene (0);
+		}
 }
 }

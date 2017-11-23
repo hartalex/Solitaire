@@ -27,7 +27,7 @@ public class DragNDrop : MonoBehaviour
 
 
 		// Debug.Log(_mouseState);
-			if (Input.GetMouseButtonDown(0)|| (Input.touchCount > 0 && Input.GetTouch (0).phase == TouchPhase.Began))
+		if (Input.GetMouseButtonDown(0)|| (Input.touchCount > 0 && Input.GetTouch (0).phase == TouchPhase.Began))
 		{
 			origin = transform.localPosition;
 			RaycastHit hitInfo;
@@ -61,7 +61,7 @@ public class DragNDrop : MonoBehaviour
 					RaycastHit hitInfo;
 					target = GetClickedObject (out hitInfo);
 					if (target != null && carringCard != null) {
-						Pile destPile = target.GetComponent<Pile> ();
+						Pile destPile = target.GetComponentInParent<Pile> ();
 						Pile srcPile = carringCard.GetComponentInParent<Pile> ();
 				
 						Card card = carringCard;
@@ -88,6 +88,14 @@ public class DragNDrop : MonoBehaviour
 									srcPile.RemoveCardFromTop ();
 									tp.AddCardToTop (card);
 									handled = true;
+								} else if (tp.GetSize () > 0) {
+									Card topCard = tp.GetCardFromTop ();
+									if (topCard.GetColor () != card.GetColor () &&
+										((int)topCard.rank) -1 == ((int)card.rank)) {
+										srcPile.RemoveCardFromTop ();
+										tp.AddCardToTop (card);
+										handled = true;
+									}
 								}
 
 							}

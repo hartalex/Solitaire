@@ -103,5 +103,13 @@ namespace Solitaire
         {
             this.myFacingUp = !this.myFacingUp;
         }
+
+		public Color GetColor() {
+			Color retval = Color.Black;
+			if (suit == Suit.Diamond || suit == Suit.Heart) {
+				retval = Color.Red;
+			}
+			return retval;
+		}
     }
 }
