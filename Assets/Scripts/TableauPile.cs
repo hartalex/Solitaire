@@ -9,9 +9,10 @@ namespace Solitaire {
 		{
 
 		}
+
+
 		public void AddCardToTop(Card card)
 		{
-
 			base.AddCardToTop (card);
 
 			for (int i = 0; i < size; i++) {

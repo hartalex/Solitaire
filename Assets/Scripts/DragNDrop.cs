@@ -12,12 +12,12 @@ public class DragNDrop : MonoBehaviour
 	public Vector3 origin;
 	private Quaternion originRotation;
 	private Vector3 originScale;
+	private Card carringCard;
 
 	// Use this for initialization
 	void Start()
 	{
-		originRotation = transform.localRotation;
-		originScale = transform.localScale;
+
 	}
 
 	// Update is called once per frame
@@ -33,13 +33,17 @@ public class DragNDrop : MonoBehaviour
 			target = GetClickedObject(out hitInfo);
 			if (target != null)
 			{
-				DragNDrop dnd = target.GetComponent<DragNDrop>();
-				if (dnd != null)
+			    origin = target.transform.localPosition;
+				originRotation = target.transform.localRotation;
+				originScale = target.transform.localScale;
+				Card card = target.GetComponent<Card>();
+				if (card != null)
 				{
 					_mouseState = true;
 					screenSpace = Camera.main.WorldToScreenPoint(target.transform.position);
 					offset = target.transform.position - Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, screenSpace.z));
 					Collider col = target.GetComponent<Collider>();
+					carringCard = card;
 					if (col != null)
 					{
 						col.enabled = false;
@@ -52,25 +56,35 @@ public class DragNDrop : MonoBehaviour
 			_mouseState = false;
 			RaycastHit hitInfo;
 			target = GetClickedObject(out hitInfo);
-			if (target != null)
-			{
-				Pile destPile = target.GetComponent<Pile> ();
-				Pile srcPile = target.GetComponentInParent<Pile> ();
+				if (target != null) {
+					Pile destPile = target.GetComponent<Pile> ();
+					Pile srcPile = target.GetComponentInParent<Pile> ();
 				
-				Card card = GetComponent<Card> ();
-				if (destPile != null && card != null) {
-						if (srcPile != null) {
-							srcPile.RemoveCardFromTop();
+					Card card = GetComponent<Card> ();
+					if (destPile != null && card != null) {
+						FoundationPile fp = destPile.GetComponent<FoundationPile> ();
+						if (fp != null) {
+							if (fp.AddCard (card)) {
+								if (srcPile != null) {
+									srcPile.RemoveCardFromTop ();
+								}
+								carringCard = null;
+							} else {
+								ReturnToPreviousPosition (target);
+							}
 						}
-						destPile.AddCardToTop (card);
+
+						// TableauPiles
+					} else {
+						ReturnToPreviousPosition (target);
+					}
+				
+					target = null;
+				} else if (carringCard != null) {
+					ReturnToPreviousPosition (carringCard.gameObject);
+					carringCard = null;
 				}
-				target = null;
-			}
-			else
-			{
-				transform.localPosition = origin;
-				//isEquipped = false;
-			}
+			
 			Collider col = GetComponent<Collider>();
 			if (col != null)
 			{
@@ -104,5 +118,12 @@ public class DragNDrop : MonoBehaviour
 
 		return target;
 	}
+
+		private void ReturnToPreviousPosition(GameObject target) {
+			target.transform.localPosition = origin;
+			target.transform.localRotation = originRotation;
+			target.transform.localScale = originScale;
+		
+		}
 }
 }

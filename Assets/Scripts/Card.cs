@@ -15,14 +15,9 @@ namespace Solitaire
 		[SerializeField]
         private bool myFacingUp;
 
-		private DragNDrop dnd = null;
-
 
 		public void Start() {
-			dnd = GetComponent<DragNDrop> ();
-			if (dnd == null) {
-				throw new MissingComponentException ("DragNDrop");
-			}
+			
 		}
 
         public Card(Suit suit, Rank rank, bool facingUp = false)
@@ -96,9 +91,6 @@ namespace Solitaire
             set
             {
                 myFacingUp = value;
-				if (dnd != null) {
-					dnd.enabled = myFacingUp;
-				}
 				if (myFacingUp == true) {
 					this.transform.localRotation = Quaternion.Euler( new Vector3 (-90,180,0));
 						} else {

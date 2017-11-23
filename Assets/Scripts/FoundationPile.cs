@@ -22,7 +22,7 @@ namespace Solitaire
                 if (card.rank == Rank.Ace)
                 {
                     card.facingUp = true;
-                    this.AddCard(card);
+					base.AddCardToTop(card);
                     retval = true;
                 }
             }
