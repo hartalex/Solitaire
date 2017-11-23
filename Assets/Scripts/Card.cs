@@ -92,9 +92,9 @@ namespace Solitaire
             {
                 myFacingUp = value;
 				if (myFacingUp == true) {
-					this.transform.localRotation = Quaternion.Euler( new Vector3 (-90,180,0));
+					this.transform.localRotation = Quaternion.Euler( new Vector3 (0,0,0));
 						} else {
-					this.transform.localRotation = Quaternion.Euler( new Vector3 (-90,0,0));
+					this.transform.localRotation = Quaternion.Euler( new Vector3 (0,180,0));
 						}
             }
         }
