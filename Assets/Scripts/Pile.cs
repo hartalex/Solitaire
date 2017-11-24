@@ -35,8 +35,6 @@ namespace Solitaire
 
 
             size++;
-		
-
         }
 
         public void AddCardToBottom(Card card)
@@ -47,7 +45,9 @@ namespace Solitaire
             }
 			size++;
 			cards[0] = card;
-			card.transform.SetParent (this.transform);
+			if (this != null) {
+				card.transform.SetParent (this.transform);
+			}
 			card.transform.localPosition = new Vector3 (0,0,-size * cardThickness);
             
         }
@@ -160,14 +160,7 @@ namespace Solitaire
 			}
         }
 
-        public void AddPile(Pile pile)
-        {
-            for (int i = 0; i < pile.size; i++)
-            {
-                Card card = pile.GetCard(i);
-                this.AddCardToTop(card);
-            }
-        }
+
 
 		protected Card CreateCard(Suit suit, Rank rank, Material material) {
 			Card retval = null;
@@ -182,6 +175,37 @@ namespace Solitaire
 			mr.materials = newMaterials;
 			gameObjectCard.name = retval.ToShortName ();
 			gameObjectCard.transform.localPosition = new Vector3 ();
+			return retval;
+		}
+
+		public Card[] SplitPileAtCard(Card card) {
+			Card[] retval = new Card[52];
+			int i = size -1;
+			int ni = -1;
+			while (i >= 0 && cards [i] != null && (cards[i].rank != card.rank || cards[i].suit != card.suit)) {
+				i--;
+				retval[++ni] = RemoveCardFromTop ();
+			}
+			if (cards [i].rank == card.rank && cards [i].suit == card.suit) {
+				retval[++ni] = RemoveCardFromTop ();
+			}
+
+			return retval;
+		}
+
+		public Card[] GetPileAtCard(Card card) {
+			Card[] retval = new Card[52];
+			int i = size -1;
+			int ni = -1;
+			while (i >= 0 && cards [i] != null && (cards[i].rank != card.rank || cards[i].suit != card.suit)) {
+				ni++;
+				retval[ni] = cards[i];
+				i--;
+			}
+			if (cards [i].rank == card.rank && cards [i].suit == card.suit) {
+				retval[++ni] = cards[i];
+			}
+
 			return retval;
 		}
     }
