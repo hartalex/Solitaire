@@ -20,16 +20,19 @@ namespace Solitaire {
 		public new void AddCardToTop(Card card)
 		{
 			base.AddCardToTop (card);
+			bool first = false;
+			int firstFacingUpIndex = -1;
 			for (int i = 0; i < size; i++) {
-				cards[i].transform.localPosition = new Vector3 (0, -i * 0.1f,  -(i+1) * cardThickness);
+				if (cards [i].facingUp && first != true) {
+					first = true;
+					firstFacingUpIndex = i;
+					cards [i].transform.localPosition = new Vector3 (0, -i * 0.1f, -(i + 1) * cardThickness);
+				} else if (cards [i].facingUp && first) {
+					cards [i].transform.localPosition = new Vector3 (0, -firstFacingUpIndex * 0.1f + -(i-firstFacingUpIndex) * 0.2f, -(i + 1) * cardThickness);
+				} else {
+					cards [i].transform.localPosition = new Vector3 (0, -i * 0.1f, -(i + 1) * cardThickness);
+				}
 			}
-
-		}
-
-		public new void AddCardToBottom(Card card)
-		{
-			base.AddCardToBottom (card);
-			card.transform.localPosition = new Vector3 (0,-(size-1) * 0.1f,-(size-1) * cardThickness);
 
 		}
 

@@ -68,6 +68,7 @@ public class DragNDrop : MonoBehaviour
 								originPositions [0] = targets [0].transform.localPosition;
 								originRotations [0] = targets [0].transform.localRotation;
 								originScales [0] = targets [0].transform.localScale;
+
 							}
 				
 							_mouseState = true;

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using UnityEngine;
 
 
 namespace Solitaire
@@ -22,6 +23,10 @@ namespace Solitaire
                 if (card.rank == Rank.Ace)
                 {
                     card.facingUp = true;
+					Collider col = card.GetComponent<Collider> ();
+					if (col != null) {
+						col.enabled = true;
+					}
 					AddCardToTop(card);
                     retval = true;
                 }
@@ -32,6 +37,10 @@ namespace Solitaire
                 if (TopCard.suit == card.suit && (int)TopCard.rank == ((int)card.rank)-1)
                 {
                     card.facingUp = true;
+					Collider col = card.GetComponent<Collider> ();
+					if (col != null) {
+						col.enabled = true;
+					}
 					AddCardToTop(card);
                     retval = true;
                     if (TopCard.rank == Rank.King)
