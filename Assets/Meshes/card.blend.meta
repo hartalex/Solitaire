@@ -6,12 +6,23 @@ ModelImporter:
   serializedVersion: 22
   fileIDToRecycleName:
     100000: //RootNode
+    100002: Armature
+    100004: Card
+    100006: Center
+    100008: LeftEdge
+    100010: RightEdge
     400000: //RootNode
+    400002: Armature
+    400004: Card
+    400006: Center
+    400008: LeftEdge
+    400010: RightEdge
     2300000: //RootNode
     3300000: //RootNode
     4300000: Card
     7400000: SideFlip
     9500000: //RootNode
+    13700000: Card
   externalObjects:
   - first:
       type: UnityEngine:Material
@@ -38,7 +49,7 @@ ModelImporter:
     bakeSimulation: 0
     resampleCurves: 1
     optimizeGameObjects: 0
-    motionNodeName: <Root Transform>
+    motionNodeName: Armature
     rigImportErrors: 
     rigImportWarnings: 
     animationImportErrors: 
@@ -58,7 +69,7 @@ ModelImporter:
       name: SideFlip
       takeName: Default Take
       firstFrame: 0
-      lastFrame: 60
+      lastFrame: 69
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -121,7 +132,7 @@ ModelImporter:
     armStretch: 0.05
     legStretch: 0.05
     feetSpacing: 0
-    rootMotionBoneName: 
+    rootMotionBoneName: Armature
     rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
     hasTranslationDoF: 0
     hasExtraRoot: 0

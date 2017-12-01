@@ -19,7 +19,7 @@ namespace Solitaire
 
 		public void Start() {
 			
-			animator = GetComponent<Animator> ();
+			animator = GetComponentInChildren<Animator> ();
 			if (animator == null) {
 				throw new MissingComponentException ("Animator");
 			}
@@ -99,6 +99,7 @@ namespace Solitaire
 					if (animator != null) {
 						animator.SetTrigger ("SideFlip");
 					}
+
 					//this.transform.localRotation = Quaternion.Euler( new Vector3 (90,0,0));
 				}
 				myFacingUp = value;

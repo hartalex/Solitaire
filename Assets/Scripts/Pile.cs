@@ -170,7 +170,7 @@ namespace Solitaire
 			retval.suit = suit;
 			retval.rank = rank;
 			retval.facingUp = false;
-			MeshRenderer mr = gameObjectCard.GetComponent<MeshRenderer> ();
+			SkinnedMeshRenderer mr = gameObjectCard.GetComponentInChildren<SkinnedMeshRenderer> ();
 			Material[] newMaterials = { mr.materials[0], mr.materials[1], material};
 			mr.materials = newMaterials;
 			gameObjectCard.name = retval.ToShortName ();
