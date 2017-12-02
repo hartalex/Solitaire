@@ -16,8 +16,11 @@ namespace Solitaire
         private bool myFacingUp;
 
 		private Animator animator;
-		private ParticleSystem particleSystem;
+		private ParticleSystem myParticleSystem;
+		private Vector3 targetPosition;
+		private Boolean isMoving = false;
 
+		private float journeyLength;
 
 		public void Start() {
 			
@@ -25,11 +28,11 @@ namespace Solitaire
 			if (animator == null) {
 				throw new MissingComponentException ("Animator");
 			}
-			particleSystem = GetComponentInChildren<ParticleSystem> ();
-			if (particleSystem == null) {
+			myParticleSystem = GetComponentInChildren<ParticleSystem> ();
+			if (myParticleSystem == null) {
 				throw new MissingComponentException ("ParticleSystem");
 			}
-			ParticleSystemRenderer psr = particleSystem.GetComponent<ParticleSystemRenderer> ();
+			ParticleSystemRenderer psr = myParticleSystem.GetComponent<ParticleSystemRenderer> ();
 
 			SkinnedMeshRenderer mr = GetComponentInChildren<SkinnedMeshRenderer> ();
 			psr.material = mr.materials[2];
@@ -131,16 +134,35 @@ namespace Solitaire
 		}
 
 		public void Particle() {
-			if (particleSystem != null) {
-				particleSystem.Play ();
+			if (myParticleSystem != null) {
+				myParticleSystem.Play ();
 			}
 		}
 
 		public void StopParticle() {
-			if (particleSystem != null) {
-				particleSystem.Stop ();
-				particleSystem.Clear ();
+			if (myParticleSystem != null) {
+				myParticleSystem.Stop ();
+				myParticleSystem.Clear ();
 			}
+		}
+
+		public void MoveTo(Vector3 position) {
+			targetPosition = position;
+		}
+
+		public void Update() {
+			if (!isMoving && transform.localPosition != targetPosition) {
+				transform.localPosition = targetPosition;
+			}
+		}
+
+		public void PickedUp() {
+			StopParticle ();
+			isMoving = true;
+		}
+
+		public void Dropped() {
+			isMoving = false;
 		}
     }
 }

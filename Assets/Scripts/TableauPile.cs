@@ -26,11 +26,11 @@ namespace Solitaire {
 				if (cards [i].facingUp && first != true) {
 					first = true;
 					firstFacingUpIndex = i;
-					cards [i].transform.localPosition = new Vector3 (0, -i * 0.15f, -(i + 1) * cardThickness);
+					cards [i].MoveTo( new Vector3 (0, -i * 0.15f, -(i + 1) * cardThickness));
 				} else if (cards [i].facingUp && first) {
-					cards [i].transform.localPosition = new Vector3 (0, -firstFacingUpIndex * 0.15f + -(i-firstFacingUpIndex) * 0.3f, -(i + 1) * cardThickness);
+							cards [i].MoveTo( new Vector3 (0, -firstFacingUpIndex * 0.15f + -(i-firstFacingUpIndex) * 0.3f, -(i + 1) * cardThickness));
 				} else {
-					cards [i].transform.localPosition = new Vector3 (0, -i * 0.15f, -(i + 1) * cardThickness);
+									cards [i].MoveTo(new Vector3 (0, -i * 0.15f, -(i + 1) * cardThickness));
 				}
 			}
 

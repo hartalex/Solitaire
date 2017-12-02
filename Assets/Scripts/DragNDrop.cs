@@ -61,6 +61,7 @@ public class DragNDrop : MonoBehaviour
 									originPositions [i] = targets [i].transform.localPosition;
 									originRotations [i] = targets [i].transform.localRotation;
 									originScales [i] = targets [i].transform.localScale;
+									multipleCards [i].PickedUp ();
 									i++;
 								}
 							} else {
@@ -70,7 +71,8 @@ public class DragNDrop : MonoBehaviour
 								originScales [0] = targets [0].transform.localScale;
 
 							}
-							card.StopParticle ();
+
+							card.PickedUp ();
 
 							// offset.z = -0.5f;
 							int ii = 0;
@@ -113,8 +115,10 @@ public class DragNDrop : MonoBehaviour
 								if (fp.AddCard (card)) {
 									srcPile.RemoveCardFromTop ();
 									card.Particle ();
+									card.Dropped ();
 									carringCard = null;
 								} else {
+									carringCard.Dropped ();
 									ReturnToPreviousPosition (carringCard.gameObject);
 									carringCard = null;
 								}
@@ -127,9 +131,14 @@ public class DragNDrop : MonoBehaviour
 								if (tp.GetSize () == 0 && card.rank == Rank.King) {
 									tp.AddPile (srcPile.SplitPileAtCard (card));
 									card.Particle ();
+									card.Dropped ();
 									handled = true;
 									int ii = 0;
 									while (targets [ii] != null) {
+										Card cardTarget = targets [ii].GetComponent<Card> ();
+										if (cardTarget != null) {
+											cardTarget.Dropped();
+										}
 										Collider col = targets[ii].GetComponent<Collider> ();
 										if (col != null) {
 											col.enabled = true;
@@ -141,6 +150,7 @@ public class DragNDrop : MonoBehaviour
 									if (topCard.GetColor () != card.GetColor () &&
 										((int)topCard.rank) -1 == ((int)card.rank)) {
 										card.Particle ();
+										card.Dropped ();
 										tp.AddPile (srcPile.SplitPileAtCard (card));
 
 										handled = true;
@@ -158,12 +168,14 @@ public class DragNDrop : MonoBehaviour
 							}
 
 							if (!handled) {
+								carringCard.Dropped ();
 								ReturnToPreviousPosition (carringCard.gameObject);
 								carringCard = null;
 							}
 
 
 						} else {
+							carringCard.Dropped ();
 							ReturnToPreviousPosition (carringCard.gameObject);
 							carringCard = null;
 						}
@@ -178,8 +190,10 @@ public class DragNDrop : MonoBehaviour
 						}
 
 					} else if (carringCard != null) {
+						carringCard.Dropped ();
 						ReturnToPreviousPosition (carringCard.gameObject);
 						carringCard = null;
+
 					}
 
 				}

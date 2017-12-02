@@ -28,13 +28,11 @@ namespace Solitaire
 			cards[size] = card;
 			// Sets display
 			card.transform.SetParent (this.transform);
-			card.transform.localPosition = new Vector3 ();
-			for (int i = 0; i <= size; i++) {
-				cards[i].transform.localPosition = new Vector3 (0, cards[i].transform.localPosition.y,  -(i+1) * cardThickness);
-			}
-		
 
-            size++;
+			for (int i = 0; i <= size; i++) {
+				cards[i].MoveTo(new Vector3 (0,0,  -(i+1) * cardThickness));
+			}
+		    size++;
         }
 
         public void AddCardToBottom(Card card)
@@ -48,7 +46,7 @@ namespace Solitaire
 			if (this != null) {
 				card.transform.SetParent (this.transform);
 			}
-			card.transform.localPosition = new Vector3 (0,0,-size * cardThickness);
+			card.MoveTo(new Vector3 (0,0,-size * cardThickness));
             
         }
 
@@ -138,7 +136,7 @@ namespace Solitaire
 			if (size > 0) {
 				Array.Sort (cards);
 				for (int i = size; i >= 0; i--) {
-					cards [i].transform.localPosition = new Vector3 (0, cards[i].transform.localPosition.y, -(size -1 - i) * cardThickness);
+					cards [i].MoveTo(new Vector3 (0, cards[i].transform.localPosition.y, -(size -1 - i) * cardThickness));
 				}
 			}
         }
@@ -155,7 +153,7 @@ namespace Solitaire
 					cards [k] = temp;
 				}
 				for (int i = 0; i < size; i++) {
-					cards[i].transform.localPosition = new Vector3 (0, cards[i].transform.localPosition.y,  -(i+1) * cardThickness);
+					cards[i].MoveTo(new Vector3 (0, 0,  -(i+1) * cardThickness));
 				}
 			}
         }
