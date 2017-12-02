@@ -18,9 +18,9 @@ public class FlipCard : StateMachineBehaviour {
 	override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
 		Vector3 currentRotation = animator.gameObject.transform.eulerAngles;
 		Vector3 targetRotation = currentRotation;
-		targetRotation.x = (currentRotation.x + 180);
-		animator.gameObject.transform.rotation =  Quaternion.Euler(targetRotation); 
-    }
+		targetRotation.y = (currentRotation.y + 180);
+		animator.gameObject.transform.rotation = Quaternion.Euler (targetRotation); 
+	}
 
 	// OnStateMove is called right after Animator.OnAnimatorMove(). Code that processes and affects root motion should be implemented here
 	//override public void OnStateMove(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
