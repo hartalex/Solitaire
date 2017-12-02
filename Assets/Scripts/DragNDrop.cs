@@ -6,17 +6,15 @@ namespace Solitaire {
 public class DragNDrop : MonoBehaviour
 {
 	private bool _mouseState;
-	private GameObject target;
 	private GameObject[] targets;
-	public Vector3 screenSpace;
-	public Vector3 offset;
 	public Vector3[] offsets;
+	public Vector3[] screenSpaces;
 	public Vector3[] originPositions;
 	private Quaternion[] originRotations;
 	private Vector3[] originScales;
 	
 	
-
+		private static int instanceCount = 0;
 
 	private Card carringCard;
 		public Pile stockPile;
@@ -24,11 +22,16 @@ public class DragNDrop : MonoBehaviour
 	// Use this for initialization
 	void Start()
 	{
+			instanceCount++;
 			targets = new GameObject[52];
 			offsets = new Vector3[52];
 			originPositions = new Vector3[52];
 			originRotations = new Quaternion[52];
 			originScales = new Vector3[52];
+			screenSpaces = new Vector3[52];
+			if (instanceCount > 1) {
+				throw new UnityException ("DragNDrop is in multiple objects");
+			}
 	}
 
 	// Update is called once per frame
@@ -41,13 +44,10 @@ public class DragNDrop : MonoBehaviour
 		{
 			//origin = transform.localPosition;
 			RaycastHit hitInfo;
-			target = GetClickedObject(out hitInfo);
-			if (target != null)
+			targets[0] = GetClickedObject(out hitInfo);
+				if (targets[0] != null)
 			{
-			    //origin = target.transform.localPosition;
-				//originRotation = target.transform.localRotation;
-				//originScale = target.transform.localScale;
-				Card card = target.GetComponent<Card>();
+					Card card = targets[0].GetComponent<Card>();
 				if (card != null)
 				{
 						if (card.facingUp) { // only pickup face up cards
@@ -70,21 +70,26 @@ public class DragNDrop : MonoBehaviour
 								originScales [0] = targets [0].transform.localScale;
 
 							}
-				
-							_mouseState = true;
-							screenSpace = Camera.main.WorldToScreenPoint (target.transform.position);
 
-							offset = target.transform.position - Camera.main.ScreenToWorldPoint (new Vector3 (Input.mousePosition.x, Input.mousePosition.y, screenSpace.z));
+							// offset.z = -0.5f;
 							int ii = 0;
 							while (targets [ii] != null) {
-								offsets[ii] = targets [ii].transform.position - Camera.main.ScreenToWorldPoint (new Vector3 (Input.mousePosition.x, Input.mousePosition.y, screenSpace.z));
+								Vector3 heldPosition2 = targets[ii].transform.position;
+								if (!_mouseState) {
+									heldPosition2.z -= 0.5f;
+								}
+								screenSpaces[ii] = Camera.main.WorldToScreenPoint(heldPosition2);
+								offsets[ii] = heldPosition2 - Camera.main.ScreenToWorldPoint (new Vector3 (Input.mousePosition.x, Input.mousePosition.y, screenSpaces[ii].z));
+								// offsets[ii].z = -0.5f;
+								Collider col = targets[ii].GetComponent<Collider> ();
+								if (col != null) {
+									col.enabled = false;
+								}
 								ii++;
 							}
-							Collider col = target.GetComponent<Collider> ();
 							carringCard = card;
-							if (col != null) {
-								col.enabled = false;
-							}
+
+							_mouseState = true;
 						}
 				}
 			}
@@ -93,9 +98,9 @@ public class DragNDrop : MonoBehaviour
 				if (Input.GetMouseButtonUp (0) || (Input.touchCount > 0 && Input.GetTouch (0).phase == TouchPhase.Ended)) {
 					_mouseState = false;
 					RaycastHit hitInfo;
-					target = GetClickedObject (out hitInfo);
-					if (target != null && carringCard != null) {
-						Pile destPile = target.GetComponentInParent<Pile> ();
+					GameObject droptarget = GetClickedObject (out hitInfo);
+					if (droptarget != null && carringCard != null) {
+						Pile destPile = droptarget.GetComponentInParent<Pile> ();
 						Pile srcPile = carringCard.GetComponentInParent<Pile> ();
 				
 						Card card = carringCard;
@@ -153,13 +158,13 @@ public class DragNDrop : MonoBehaviour
 							carringCard = null;
 						}
 				
-						target = null;
 						for (int i = 0; i < 52; i++) {
 							targets [i] = null;
 							offsets [i] = new Vector3();
 							originPositions[i] = new Vector3();
 							originRotations[i] = new Quaternion();
 							originScales[i] = new Vector3();
+							screenSpaces [i] = new Vector3();
 						}
 
 					} else if (carringCard != null) {
@@ -172,9 +177,9 @@ public class DragNDrop : MonoBehaviour
 				// No Card just a tap
 				if (Input.GetMouseButtonUp (0) || (Input.touchCount > 0 && Input.GetTouch (0).phase == TouchPhase.Ended)) {
 					RaycastHit hitInfo;
-					target = GetClickedObject (out hitInfo);
-					if (target != null) {
-						Deck deck = target.GetComponentInParent<Deck>();
+					GameObject taptarget = GetClickedObject (out hitInfo);
+					if (taptarget != null) {
+						Deck deck = taptarget.GetComponentInParent<Deck>();
 						if (deck != null) {
 							Card deckCard = deck.RemoveCardFromTop ();
 							if (deckCard == null) {
@@ -195,21 +200,16 @@ public class DragNDrop : MonoBehaviour
 			}
 		if (_mouseState)
 		{
-			//keep track of the mouse position
-			var curScreenSpace = new Vector3(Input.mousePosition.x, Input.mousePosition.y, screenSpace.z);
 
-			//convert the screen mouse position to world point and adjust with offset
-			var curPosition = Camera.main.ScreenToWorldPoint(curScreenSpace) + offset;
-
-				if (target != null) {
-					//update the position of the object in the world
-					target.transform.position = curPosition;
-				}
-				for (int i = 0; i <52; i++) {
-					if (targets[i] != null) {
-						var curPosition2 = Camera.main.ScreenToWorldPoint(curScreenSpace) + offsets[i];
-						targets [i].transform.position = curPosition2;
-					}
+				int i = 0;
+				while (targets [i] != null) {
+					
+						Vector3 curScreenSpace = new Vector3(Input.mousePosition.x, Input.mousePosition.y, screenSpaces[i].z);
+						Vector3 worldPoint = Camera.main.ScreenToWorldPoint(curScreenSpace);
+						
+						Vector3 curPosition = worldPoint + offsets[i];
+						targets [i].transform.position = curPosition;
+					i++;
 				}
 		}
 	}
@@ -229,20 +229,18 @@ public class DragNDrop : MonoBehaviour
 
 		private void ReturnToPreviousPosition(GameObject target) {
 			if (target != null) {
-		//	target.transform.localPosition = origin;
-		//	target.transform.localRotation = originRotation;
-		//	target.transform.localScale = originScale;
 				int ii = 0;
 				while (targets [ii] != null) {
 					targets [ii].transform.localPosition = originPositions [ii];
 					targets [ii].transform.localRotation = originRotations [ii];
 					targets [ii].transform.localScale = originScales [ii];
+					Collider col = targets[ii].GetComponent<Collider> ();
+					if (col != null) {
+						col.enabled = true;
+					}
 					ii++;
 				}
-				Collider col = target.GetComponent<Collider> ();
-				if (col != null) {
-					col.enabled = true;
-				}
+
 			}
 		
 		}
