@@ -22,7 +22,7 @@ public class GameState : MonoBehaviour {
 
 	void Init() {
 		if (!initialized && deck.initialized) {
-			deck.Shuffle ();
+			deck.Shuffle (true);
 			for (int i = 0; i < tableauPile.GetLength (0); i++) {
 				for (int x = 0; x < i + 1; x++) {
 					Card card = deck.RemoveCardFromTop();

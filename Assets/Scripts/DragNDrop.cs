@@ -149,13 +149,18 @@ public class DragNDrop : MonoBehaviour
 									Card topCard = tp.GetCardFromTop ();
 									if (topCard.GetColor () != card.GetColor () &&
 										((int)topCard.rank) -1 == ((int)card.rank)) {
+
+										tp.AddPile (srcPile.SplitPileAtCard (card));
 										card.Particle ();
 										card.Dropped ();
-										tp.AddPile (srcPile.SplitPileAtCard (card));
 
 										handled = true;
 											int ii = 0;
 											while (targets [ii] != null) {
+												Card cardTarget = targets [ii].GetComponent<Card> ();
+												if (cardTarget != null) {
+													cardTarget.Dropped();
+												}
 												Collider col = targets[ii].GetComponent<Collider> ();
 												if (col != null) {
 													col.enabled = true;
@@ -255,13 +260,13 @@ public class DragNDrop : MonoBehaviour
 			if (target != null) {
 				int ii = 0;
 				while (targets [ii] != null) {
-					targets [ii].transform.localPosition = originPositions [ii];
+					Card cardTarget = targets [ii].GetComponent<Card> ();
+					if (cardTarget != null) {
+						cardTarget.Dropped();
+						cardTarget.MoveBackTo(originPositions [ii]);
+					}
 					targets [ii].transform.localRotation = originRotations [ii];
 					targets [ii].transform.localScale = originScales [ii];
-					Collider col = targets[ii].GetComponent<Collider> ();
-					if (col != null) {
-						col.enabled = true;
-					}
 					ii++;
 				}
 

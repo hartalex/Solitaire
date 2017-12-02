@@ -20,7 +20,10 @@ namespace Solitaire
 		private Vector3 targetPosition;
 		private Boolean isMoving = false;
 
+		private float startTime;
 		private float journeyLength;
+		private Vector3 startPosition;
+		private float movementSpeed = 4.0f;
 
 		public void Start() {
 			
@@ -36,6 +39,7 @@ namespace Solitaire
 
 			SkinnedMeshRenderer mr = GetComponentInChildren<SkinnedMeshRenderer> ();
 			psr.material = mr.materials[2];
+			movementSpeed = 4.0f;
 		}
 
         public Card(Suit suit, Rank rank, bool facingUp = false)
@@ -147,12 +151,41 @@ namespace Solitaire
 		}
 
 		public void MoveTo(Vector3 position) {
+			movementSpeed = 4.0f;
 			targetPosition = position;
+			startTime = Time.time;
+			startPosition = transform.localPosition;
+			journeyLength = Vector3.Distance (startPosition, targetPosition);
+			Collider col = GetComponent<Collider> ();
+			if (col != null) {
+				col.enabled = false;
+			}
 		}
+
+		public void MoveBackTo(Vector3 position) {
+			movementSpeed = 20.0f;
+			targetPosition = position;
+			startTime = Time.time;
+			startPosition = transform.localPosition;
+			journeyLength = Vector3.Distance (startPosition, targetPosition);
+			Collider col = GetComponent<Collider> ();
+			if (col != null) {
+				col.enabled = false;
+			}
+		}
+
+
 
 		public void Update() {
 			if (!isMoving && transform.localPosition != targetPosition) {
-				transform.localPosition = targetPosition;
+				float distCovered = (Time.time - startTime) * movementSpeed;
+				float fracJourney = distCovered / journeyLength;
+				transform.localPosition = Vector3.Lerp (startPosition, targetPosition, fracJourney);
+			} else if (transform.localPosition == targetPosition) {
+				Collider col = GetComponent<Collider> ();
+				if (col != null) {
+					col.enabled = true;
+				}
 			}
 		}
 
@@ -163,6 +196,11 @@ namespace Solitaire
 
 		public void Dropped() {
 			isMoving = false;
+		}
+
+		public void SetPosition(Vector3 position) {
+			this.targetPosition = position;
+			transform.localPosition = position;
 		}
     }
 }

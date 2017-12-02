@@ -23,16 +23,24 @@ namespace Solitaire
 			return size;
 		}
 
-        public void AddCardToTop(Card card)
-        {
+		public void AddCardToTop(Card card, bool noMove)
+		{
 			cards[size] = card;
 			// Sets display
 			card.transform.SetParent (this.transform);
 
 			for (int i = 0; i <= size; i++) {
-				cards[i].MoveTo(new Vector3 (0,0,  -(i+1) * cardThickness));
+				if (noMove) {
+					cards [i].SetPosition(new Vector3 (0, 0, -(i + 1) * cardThickness));
+				} else {
+					cards [i].MoveTo (new Vector3 (0, 0, -(i + 1) * cardThickness));
+				}
 			}
-		    size++;
+			size++;
+		}
+        public void AddCardToTop(Card card)
+        {
+			this.AddCardToTop (card, false);
         }
 
         public void AddCardToBottom(Card card)
@@ -141,7 +149,7 @@ namespace Solitaire
 			}
         }
 
-        public void Shuffle()
+		public void Shuffle(bool noMove)
         {
 			if (size > 0) {
 				int n = size;
@@ -153,10 +161,18 @@ namespace Solitaire
 					cards [k] = temp;
 				}
 				for (int i = 0; i < size; i++) {
-					cards[i].MoveTo(new Vector3 (0, 0,  -(i+1) * cardThickness));
+					if (noMove) {
+						cards [i].SetPosition(new Vector3 (0, 0, -(i + 1) * cardThickness));
+					} else {
+						cards [i].MoveTo (new Vector3 (0, 0, -(i + 1) * cardThickness));
+					}
 				}
 			}
         }
+
+		public void Shuffle() {
+			this.Shuffle (false);
+		}
 
 
 
