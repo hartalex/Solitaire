@@ -16,6 +16,8 @@ namespace Solitaire
         private bool myFacingUp;
 
 		private Animator animator;
+		private ParticleSystem particleSystem;
+
 
 		public void Start() {
 			
@@ -23,6 +25,14 @@ namespace Solitaire
 			if (animator == null) {
 				throw new MissingComponentException ("Animator");
 			}
+			particleSystem = GetComponentInChildren<ParticleSystem> ();
+			if (particleSystem == null) {
+				throw new MissingComponentException ("ParticleSystem");
+			}
+			ParticleSystemRenderer psr = particleSystem.GetComponent<ParticleSystemRenderer> ();
+
+			SkinnedMeshRenderer mr = GetComponentInChildren<SkinnedMeshRenderer> ();
+			psr.material = mr.materials[2];
 		}
 
         public Card(Suit suit, Rank rank, bool facingUp = false)
@@ -118,6 +128,19 @@ namespace Solitaire
 				retval = Color.Red;
 			}
 			return retval;
+		}
+
+		public void Particle() {
+			if (particleSystem != null) {
+				particleSystem.Play ();
+			}
+		}
+
+		public void StopParticle() {
+			if (particleSystem != null) {
+				particleSystem.Stop ();
+				particleSystem.Clear ();
+			}
 		}
     }
 }

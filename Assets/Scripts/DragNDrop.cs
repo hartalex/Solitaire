@@ -70,6 +70,7 @@ public class DragNDrop : MonoBehaviour
 								originScales [0] = targets [0].transform.localScale;
 
 							}
+							card.StopParticle ();
 
 							// offset.z = -0.5f;
 							int ii = 0;
@@ -111,7 +112,7 @@ public class DragNDrop : MonoBehaviour
 							if (fp != null) {
 								if (fp.AddCard (card)) {
 									srcPile.RemoveCardFromTop ();
-
+									card.Particle ();
 									carringCard = null;
 								} else {
 									ReturnToPreviousPosition (carringCard.gameObject);
@@ -125,6 +126,7 @@ public class DragNDrop : MonoBehaviour
 							if (tp != null) {
 								if (tp.GetSize () == 0 && card.rank == Rank.King) {
 									tp.AddPile (srcPile.SplitPileAtCard (card));
+									card.Particle ();
 									handled = true;
 									int ii = 0;
 									while (targets [ii] != null) {
@@ -138,7 +140,7 @@ public class DragNDrop : MonoBehaviour
 									Card topCard = tp.GetCardFromTop ();
 									if (topCard.GetColor () != card.GetColor () &&
 										((int)topCard.rank) -1 == ((int)card.rank)) {
-
+										card.Particle ();
 										tp.AddPile (srcPile.SplitPileAtCard (card));
 
 										handled = true;

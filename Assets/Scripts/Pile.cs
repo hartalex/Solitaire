@@ -32,7 +32,7 @@ namespace Solitaire
 			for (int i = 0; i <= size; i++) {
 				cards[i].transform.localPosition = new Vector3 (0, cards[i].transform.localPosition.y,  -(i+1) * cardThickness);
 			}
-
+		
 
             size++;
         }
