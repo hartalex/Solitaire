@@ -126,9 +126,13 @@ public class DragNDrop : MonoBehaviour
 								if (tp.GetSize () == 0 && card.rank == Rank.King) {
 									tp.AddPile (srcPile.SplitPileAtCard (card));
 									handled = true;
-									Collider col = card.GetComponent<Collider> ();
-									if (col != null) {
-										col.enabled = true;
+									int ii = 0;
+									while (targets [ii] != null) {
+										Collider col = targets[ii].GetComponent<Collider> ();
+										if (col != null) {
+											col.enabled = true;
+										}
+										ii++;
 									}
 								} else if (tp.GetSize () > 0) {
 									Card topCard = tp.GetCardFromTop ();
@@ -138,10 +142,14 @@ public class DragNDrop : MonoBehaviour
 										tp.AddPile (srcPile.SplitPileAtCard (card));
 
 										handled = true;
-										Collider col = card.GetComponent<Collider> ();
-										if (col != null) {
-											col.enabled = true;
-										}
+											int ii = 0;
+											while (targets [ii] != null) {
+												Collider col = targets[ii].GetComponent<Collider> ();
+												if (col != null) {
+													col.enabled = true;
+												}
+												ii++;
+											}
 									}
 								}
 

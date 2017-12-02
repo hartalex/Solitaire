@@ -15,9 +15,14 @@ namespace Solitaire
 		[SerializeField]
         private bool myFacingUp;
 
+		private Animator animator;
 
 		public void Start() {
 			
+			animator = GetComponent<Animator> ();
+			if (animator == null) {
+				throw new MissingComponentException ("Animator");
+			}
 		}
 
         public Card(Suit suit, Rank rank, bool facingUp = false)
@@ -90,12 +95,14 @@ namespace Solitaire
             }
             set
             {
-                myFacingUp = value;
-				if (myFacingUp == true) {
-					this.transform.localRotation = Quaternion.Euler( new Vector3 (0,0,0));
-						} else {
-					this.transform.localRotation = Quaternion.Euler( new Vector3 (0,180,0));
-						}
+				if (myFacingUp != value) {
+					if (animator != null) {
+						animator.SetTrigger ("SideFlip");
+					}
+					//this.transform.localRotation = Quaternion.Euler( new Vector3 (90,0,0));
+				}
+				myFacingUp = value;
+
             }
         }
 
