@@ -12,7 +12,7 @@ namespace Solitaire
 		public GameObject cardprefab = null;
         protected Card[] cards;
 		protected int size = 0;
-		protected float cardThickness  = 0.015f;
+		protected float cardThickness  = 0.008f;
 
         public Pile()
         {
