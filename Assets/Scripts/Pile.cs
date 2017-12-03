@@ -200,8 +200,10 @@ namespace Solitaire
 				i--;
 				retval[++ni] = RemoveCardFromTop ();
 			}
-			if (cards [i].rank == card.rank && cards [i].suit == card.suit) {
-				retval[++ni] = RemoveCardFromTop ();
+			if (i >= 0) {
+				if (cards [i].rank == card.rank && cards [i].suit == card.suit) {
+					retval [++ni] = RemoveCardFromTop ();
+				}
 			}
 
 			return retval;

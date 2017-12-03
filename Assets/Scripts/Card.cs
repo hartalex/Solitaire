@@ -151,7 +151,7 @@ namespace Solitaire
 		}
 
 		public void MoveTo(Vector3 position) {
-			movementSpeed = 4.0f;
+			movementSpeed = 10.0f;
 			targetPosition = position;
 			startTime = Time.time;
 			startPosition = transform.localPosition;
@@ -201,6 +201,10 @@ namespace Solitaire
 		public void SetPosition(Vector3 position) {
 			this.targetPosition = position;
 			transform.localPosition = position;
+			Collider col = GetComponent<Collider> ();
+			if (col != null) {
+				col.enabled = false;
+			}
 		}
     }
 }
