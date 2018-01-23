@@ -115,14 +115,36 @@ namespace Solitaire
 				if (myFacingUp != value) {
 					if (animator != null) {
 						animator.SetTrigger ("SideFlip");
+						Vector3 currentRotation = transform.eulerAngles;
+						Vector3 targetRotation = currentRotation;
+						targetRotation.y = (currentRotation.y + 180);
+						transform.rotation = Quaternion.Euler (targetRotation); 
 					}
-
-					//this.transform.localRotation = Quaternion.Euler( new Vector3 (90,0,0));
+					myFacingUp = value;
 				}
-				myFacingUp = value;
-
             }
         }
+
+		public bool facingUpNoAnimation {
+			get
+			{
+				return myFacingUp;
+			}
+			set
+			{
+				if (myFacingUp != value) {
+					if (animator != null) {
+						//animator.SetTrigger ("SideFlip");
+						Vector3 currentRotation = transform.eulerAngles;
+						Vector3 targetRotation = currentRotation;
+						targetRotation.y = (currentRotation.y + 180);
+						transform.rotation = Quaternion.Euler (targetRotation); 
+					}
+					myFacingUp = value;
+				}
+			}
+		}
+
 
         public void Flip()
         {

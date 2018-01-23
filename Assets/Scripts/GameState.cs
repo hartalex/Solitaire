@@ -12,20 +12,21 @@ namespace Solitaire
 		public Deck deck;
 		public TableauPile[] tableauPile;
 		public FoundationPile[] foundationPile;
+		public Pile stockPile;
 		public bool initialized = false;
 		// Use this for initialization
 		void Start ()
 		{
-			Init ();
+			Deal ();
 		}
 	
 		// Update is called once per frame
 		void Update ()
 		{
-			Init ();
+			Deal ();
 		}
 
-		void Init ()
+		void Deal ()
 		{
 			if (!initialized && deck.initialized) {
 				deck.Shuffle (true);
@@ -42,7 +43,25 @@ namespace Solitaire
 
 		public void Restart ()
 		{
-			SceneManager.LoadScene (0);
+			Card card = null;
+			// Return all cards to deck and redeal
+			for (int i = 0; i < tableauPile.GetLength (0); i++) {
+				MoveCardsFaceDown (tableauPile[i], deck);
+			}
+			for (int i = 0; i < foundationPile.GetLength (0); i++) {
+				MoveCardsFaceDown (foundationPile[i], deck);
+			}
+			MoveCardsFaceDown (stockPile, deck);
+			this.initialized = false;
+		}
+
+		private void MoveCardsFaceDown(Pile src, Pile dest) {
+			Card card = src.RemoveCardFromTop ();
+			while (card != null) {
+				card.facingUpNoAnimation = false;
+				dest.AddCardToBottom (card, true);
+				card = src.RemoveCardFromTop ();
+			}
 		}
 
 		public bool AutoPlaceCard (Card card)

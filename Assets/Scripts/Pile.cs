@@ -43,7 +43,7 @@ namespace Solitaire
 			this.AddCardToTop (card, false);
         }
 
-        public void AddCardToBottom(Card card)
+		public void AddCardToBottom(Card card, bool noMove)
         {
             for (int i = size; i > 0; i--)
             {
@@ -54,9 +54,18 @@ namespace Solitaire
 			if (this != null) {
 				card.transform.SetParent (this.transform);
 			}
-			card.MoveTo(new Vector3 (0,0,-size * cardThickness));
-            
+			if (noMove) {
+				card.SetPosition(new Vector3 (0,0,-size * cardThickness));
+			} else {
+				card.MoveTo(new Vector3 (0,0,-size * cardThickness));
+			}
+      
         }
+
+		public void AddCardToBottom(Card card)
+		{
+			this.AddCardToBottom (card, false);
+		}
 
         public Card RemoveCardFromTop()
         {
