@@ -13,7 +13,11 @@ namespace Solitaire
 		public TableauPile[] tableauPile;
 		public FoundationPile[] foundationPile;
 		public Pile stockPile;
+
+		public GameObject MenuButton;
+
 		public bool initialized = false;
+
 		// Use this for initialization
 		void Start ()
 		{
@@ -95,11 +99,24 @@ namespace Solitaire
 						}
 					}
 				}
-
-
-
 			}
 			return cardPlaced;
 		}
+
+		// called when a ui menu is showing so cards can't move around in the background
+		public void ShowEverything(bool status) {
+			//MenuButton.SetActive (status);
+			deck.gameObject.SetActive(status);
+			stockPile.gameObject.SetActive(status);
+			for (int i = 0; i < tableauPile.GetLength (0); i++) {
+				tableauPile[i].gameObject.SetActive(status);
+			}
+			for (int i = 0; i < foundationPile.GetLength (0); i++) {
+				foundationPile[i].gameObject.SetActive(status);
+			}
+		}
+
+
+			
 	}
 }
