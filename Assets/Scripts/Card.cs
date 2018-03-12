@@ -25,6 +25,8 @@ namespace Solitaire
 		private Vector3 startPosition;
 		private float movementSpeed = 4.0f;
 
+		public Boolean disableColliders = true; // handles tableflip cards
+
 		public void Start() {
 			
 			animator = GetComponentInChildren<Animator> ();
@@ -37,7 +39,7 @@ namespace Solitaire
 			}
 			ParticleSystemRenderer psr = myParticleSystem.GetComponent<ParticleSystemRenderer> ();
 
-			SkinnedMeshRenderer mr = GetComponentInChildren<SkinnedMeshRenderer> ();
+			MeshRenderer mr = GetComponentInChildren<MeshRenderer> ();
 			psr.material = mr.materials[2];
 			movementSpeed = 4.0f;
 		}
@@ -178,9 +180,11 @@ namespace Solitaire
 			startTime = Time.time;
 			startPosition = transform.localPosition;
 			journeyLength = Vector3.Distance (startPosition, targetPosition);
-			Collider col = GetComponent<Collider> ();
-			if (col != null) {
-				col.enabled = false;
+			if (disableColliders) {
+				Collider col = GetComponent<Collider> ();
+				if (col != null) {
+					col.enabled = false;
+				}
 			}
 		}
 
@@ -190,9 +194,11 @@ namespace Solitaire
 			startTime = Time.time;
 			startPosition = transform.localPosition;
 			journeyLength = Vector3.Distance (startPosition, targetPosition);
-			Collider col = GetComponent<Collider> ();
-			if (col != null) {
-				col.enabled = false;
+			if (disableColliders) {
+				Collider col = GetComponent<Collider> ();
+				if (col != null) {
+					col.enabled = false;
+				}
 			}
 		}
 
@@ -204,9 +210,11 @@ namespace Solitaire
 				float fracJourney = distCovered / journeyLength;
 				transform.localPosition = Vector3.Lerp (startPosition, targetPosition, fracJourney);
 			} else if (transform.localPosition == targetPosition) {
-				Collider col = GetComponent<Collider> ();
-				if (col != null) {
-					col.enabled = true;
+				if (disableColliders) {
+					Collider col = GetComponent<Collider> ();
+					if (col != null) {
+						col.enabled = true;
+					}
 				}
 			}
 		}
@@ -223,9 +231,11 @@ namespace Solitaire
 		public void SetPosition(Vector3 position) {
 			this.targetPosition = position;
 			transform.localPosition = position;
-			Collider col = GetComponent<Collider> ();
-			if (col != null) {
-				col.enabled = false;
+			if (disableColliders) {
+				Collider col = GetComponent<Collider> ();
+				if (col != null) {
+					col.enabled = false;
+				}
 			}
 		}
     }

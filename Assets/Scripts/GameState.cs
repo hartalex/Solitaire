@@ -47,7 +47,6 @@ namespace Solitaire
 
 		public void Restart ()
 		{
-			Card card = null;
 			// Return all cards to deck and redeal
 			for (int i = 0; i < tableauPile.GetLength (0); i++) {
 				MoveCardsFaceDown (tableauPile[i], deck);

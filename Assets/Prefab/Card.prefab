@@ -291,6 +291,7 @@ MonoBehaviour:
   mySuit: 2
   myRank: 0
   myFacingUp: 1
+  disableColliders: 1
 --- !u!137 &137194996231953498
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 1
