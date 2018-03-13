@@ -37,7 +37,7 @@ namespace Solitaire
 				for (int i = 0; i < tableauPile.GetLength (0); i++) {
 					for (int x = 0; x < i + 1; x++) {
 						Card card = deck.RemoveCardFromTop ();
-						tableauPile [i].AddCardToTop (card);
+						tableauPile [i].AddCardToTop (card, true);
 
 					}
 				}

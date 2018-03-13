@@ -18,7 +18,7 @@ namespace Solitaire
 		private Animator animator;
 		private ParticleSystem myParticleSystem;
 		private Vector3 targetPosition;
-		private Boolean isMoving = false;
+		public Boolean isMoving = false;
 
 		private float startTime;
 		private float journeyLength;
@@ -30,17 +30,12 @@ namespace Solitaire
 		public void Start() {
 			
 			animator = GetComponentInChildren<Animator> ();
-			if (animator == null) {
-				throw new MissingComponentException ("Animator");
-			}
 			myParticleSystem = GetComponentInChildren<ParticleSystem> ();
-			if (myParticleSystem == null) {
-				throw new MissingComponentException ("ParticleSystem");
-			}
-			ParticleSystemRenderer psr = myParticleSystem.GetComponent<ParticleSystemRenderer> ();
-
-			MeshRenderer mr = GetComponentInChildren<MeshRenderer> ();
-			psr.material = mr.materials[2];
+			if (myParticleSystem != null) {
+				ParticleSystemRenderer psr = myParticleSystem.GetComponent<ParticleSystemRenderer> ();
+				MeshRenderer mr = GetComponentInChildren<MeshRenderer> ();
+				psr.material = mr.materials[2];
+			} 
 			movementSpeed = 4.0f;
 		}
 
@@ -201,8 +196,6 @@ namespace Solitaire
 				}
 			}
 		}
-
-
 
 		public void Update() {
 			if (!isMoving && transform.localPosition != targetPosition) {
