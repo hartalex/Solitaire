@@ -38,6 +38,7 @@ namespace Solitaire
 			}
 			size++;
 		}
+
         public void AddCardToTop(Card card)
         {
 			this.AddCardToTop (card, false);
@@ -193,9 +194,18 @@ namespace Solitaire
 			retval.suit = suit;
 			retval.rank = rank;
 			retval.facingUp = false;
+
 			MeshRenderer mr = gameObjectCard.GetComponentInChildren<MeshRenderer> ();
-			Material[] newMaterials = { mr.materials[0], mr.materials[1], material};
-			mr.materials = newMaterials;
+			if (mr != null) {
+				Material[] newMaterials = { mr.materials [0], mr.materials [1], material };
+				mr.materials = newMaterials;
+			} else {
+				SkinnedMeshRenderer smr = gameObjectCard.GetComponentInChildren<SkinnedMeshRenderer> ();
+				if (smr != null) {
+					Material[] newMaterials = { smr.materials [0], smr.materials [1], material };
+					smr.materials = newMaterials;
+				} 
+			}
 			gameObjectCard.name = retval.ToShortName ();
 			gameObjectCard.transform.localPosition = new Vector3 ();
 			return retval;

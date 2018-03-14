@@ -8,3 +8,6 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/game.scene.unity
     guid: c489ee895af5b4c4f9f2188d9fea4190
+  - enabled: 1
+    path: Assets/Scenes/TableFlip.unity
+    guid: 09f13298331f541f2b68380b0db2dceb

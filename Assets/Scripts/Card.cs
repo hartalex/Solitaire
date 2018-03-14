@@ -34,7 +34,15 @@ namespace Solitaire
 			if (myParticleSystem != null) {
 				ParticleSystemRenderer psr = myParticleSystem.GetComponent<ParticleSystemRenderer> ();
 				MeshRenderer mr = GetComponentInChildren<MeshRenderer> ();
-				psr.material = mr.materials[2];
+				if (mr != null) {
+					psr.material = mr.materials[2];
+				} else {
+					SkinnedMeshRenderer smr = GetComponentInChildren<SkinnedMeshRenderer> ();
+					if (smr != null) {
+						psr.material = smr.materials[2];
+					}
+				}
+
 			} 
 			movementSpeed = 4.0f;
 		}
