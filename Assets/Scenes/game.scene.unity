@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657755, g: 0.4964127, b: 0.57481825, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657725, g: 0.49641198, b: 0.5748184, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -616,6 +616,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Gamestate: {fileID: 27479745}
   Menu: {fileID: 1316432475}
+  statManager: {fileID: 541224738}
 --- !u!1 &420342478
 GameObject:
   m_ObjectHideFlags: 0
@@ -1051,6 +1052,46 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cardprefab: {fileID: 1759547555911772, guid: 5105ae4a42039a946abc0f9075f911a9, type: 2}
+--- !u!1 &541224737
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 541224739}
+  - component: {fileID: 541224738}
+  m_Layer: 0
+  m_Name: StatManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &541224738
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 541224737}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 88abd0a360ea9413eb0e9b0431a25b21, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &541224739
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 541224737}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.343245, y: 17.14149, z: -10}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 7
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &713695955
 Prefab:
   m_ObjectHideFlags: 0

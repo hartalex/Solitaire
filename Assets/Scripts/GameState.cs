@@ -15,6 +15,7 @@ namespace Solitaire
 		public Pile stockPile;
 
 		public GameObject MenuButton;
+       
 
 		public bool initialized = false;
 

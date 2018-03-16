@@ -12,6 +12,7 @@ public class MenuHandler : MonoBehaviour {
 	public GameState Gamestate;
 		public GameObject Menu;
 		protected bool hidden = true;
+        public StatManager statManager;
 	// Use this for initialization
 	void Start () {
 		
@@ -41,6 +42,7 @@ public class MenuHandler : MonoBehaviour {
 		public void NewGameButtonClick() {
 			Debug.Log ("NewGameButtonClick");
 			this.Hide ();
+            statManager.IncrementStat("TableFlips");
 			SceneManager.LoadScene ("TableFlip");
 		}
 
