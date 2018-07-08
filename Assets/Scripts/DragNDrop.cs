@@ -274,30 +274,31 @@ namespace Solitaire
 			if (Physics.Raycast(ray.origin, ray.direction * 10, out hit))
 			{
 				target = hit.collider.gameObject;
-			}
 
-			if (target == null)
-			{
-				Vector3 center = Camera.main.ViewportToWorldPoint(Input.mousePosition);
-                Debug.Log("center at " + center);
-				// nearest object
-				Collider[] hitColliders = Physics.OverlapSphere(center, tapRadius);
-				int i = 0;
-				float shortestLength = float.MaxValue;
-				Debug.Log("found " + hitColliders.Length + " colliders");
-				while (i < hitColliders.Length)
+				if (target.layer == 8)
 				{
-					// determine best object
-					GameObject go = hitColliders[i].gameObject;
+					Vector3 center = hit.point;
 
-					float distance = Vector3.Distance(go.transform.position, center);
-					if (distance < shortestLength)
+					Debug.Log("center at " + center);
+					// nearest object
+					Collider[] hitColliders = Physics.OverlapSphere(center, tapRadius);
+					int i = 0;
+					float shortestLength = float.MaxValue;
+					Debug.Log("found " + hitColliders.Length + " colliders");
+					while (i < hitColliders.Length)
 					{
-						shortestLength = distance;
-						target = go;
-						Debug.Log("target distance " + distance + " target: " + target);
+						// determine best object
+						GameObject go = hitColliders[i].gameObject;
+
+						float distance = Vector3.Distance(go.transform.position, center);
+						if (distance < shortestLength && go.layer != 8)
+						{
+							shortestLength = distance;
+							target = go;
+							Debug.Log("target distance " + distance + " target: " + target);
+						}
+						i++;
 					}
-					i++;
 				}
 			}
 			else
