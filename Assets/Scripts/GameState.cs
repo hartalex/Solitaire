@@ -5,11 +5,10 @@ using UnityEngine.SceneManagement;
 
 namespace Solitaire
 {
+	// Klondike Game State
 	public class GameState : MonoBehaviour
 	{
-
-
-		public Deck deck;
+        public Deck deck;
 		public TableauPile[] tableauPile;
 		public FoundationPile[] foundationPile;
 		public Pile stockPile;
@@ -22,27 +21,27 @@ namespace Solitaire
 		// Use this for initialization
 		void Start ()
 		{
-			Deal ();
 		}
 	
 		// Update is called once per frame
 		void Update ()
 		{
-			Deal ();
+			if (!initialized && deck.initialized)
+            {
+    			Deal ();
+				initialized = true;
+            }
+
 		}
 
 		void Deal ()
 		{
-			if (!initialized && deck.initialized) {
-				deck.Shuffle (true);
-				for (int i = 0; i < tableauPile.GetLength (0); i++) {
-					for (int x = 0; x < i + 1; x++) {
-						Card card = deck.RemoveCardFromTop ();
-						tableauPile [i].AddCardToTop (card, true);
-
-					}
-				}
-				initialized = true;
+            deck.Shuffle (true);
+			for (int i = 0; i < tableauPile.GetLength (0); i++) {
+				for (int x = 0; x < i + 1; x++) {
+					Card card = deck.RemoveCardFromTop ();
+					tableauPile [i].AddCardToTop (card, true);
+                }
 			}
 		}
 
@@ -56,7 +55,9 @@ namespace Solitaire
 				MoveCardsFaceDown (foundationPile[i], deck);
 			}
 			MoveCardsFaceDown (stockPile, deck);
+            // On next frame - initialization will deal out the cards
 			this.initialized = false;
+            
 		}
 
 		private void MoveCardsFaceDown(Pile src, Pile dest) {
@@ -115,8 +116,5 @@ namespace Solitaire
 				foundationPile[i].gameObject.SetActive(status);
 			}
 		}
-
-
-			
 	}
 }

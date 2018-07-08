@@ -8,11 +8,10 @@ namespace Solitaire
     public class Deck : Pile 
     {
 		public bool initialized = false;
+		public GameObject cardprefab = null;
 
 		public Material[] materials;
-        public Deck() : base()
-		{
-		}
+		public Deck() : base() {}
 
 		public void Init() {
 			if (!initialized) {
@@ -83,6 +82,36 @@ namespace Solitaire
 		public void Update() {
 			Init ();
 		}
+
+		protected Card CreateCard(Suit suit, Rank rank, Material material)
+        {
+            Card retval = null;
+            GameObject gameObjectCard = GameObject.Instantiate(cardprefab);
+
+            retval = gameObjectCard.GetComponent<Card>();
+            retval.suit = suit;
+            retval.rank = rank;
+            retval.facingUp = false;
+
+            MeshRenderer mr = gameObjectCard.GetComponentInChildren<MeshRenderer>();
+            if (mr != null)
+            {
+                Material[] newMaterials = { mr.materials[0], mr.materials[1], material };
+                mr.materials = newMaterials;
+            }
+            else
+            {
+                SkinnedMeshRenderer smr = gameObjectCard.GetComponentInChildren<SkinnedMeshRenderer>();
+                if (smr != null)
+                {
+                    Material[] newMaterials = { smr.materials[0], smr.materials[1], material };
+                    smr.materials = newMaterials;
+                }
+            }
+            gameObjectCard.name = retval.ToShortName();
+            gameObjectCard.transform.localPosition = new Vector3();
+            return retval;
+        }
 
     }
 }

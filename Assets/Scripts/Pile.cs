@@ -9,7 +9,6 @@ namespace Solitaire
 	// Top = Top of Pile,  Top = Bottom of Pile
 	public class Pile: MonoBehaviour
     {
-		public GameObject cardprefab = null;
         protected Card[] cards;
 		protected int size = 0;
 		protected float cardThickness  = 0.008f;
@@ -184,33 +183,6 @@ namespace Solitaire
 			this.Shuffle (false);
 		}
 
-
-
-		protected Card CreateCard(Suit suit, Rank rank, Material material) {
-			Card retval = null;
-			GameObject gameObjectCard = GameObject.Instantiate(cardprefab);
-
-			retval = gameObjectCard.GetComponent<Card> ();
-			retval.suit = suit;
-			retval.rank = rank;
-			retval.facingUp = false;
-
-			MeshRenderer mr = gameObjectCard.GetComponentInChildren<MeshRenderer> ();
-			if (mr != null) {
-				Material[] newMaterials = { mr.materials [0], mr.materials [1], material };
-				mr.materials = newMaterials;
-			} else {
-				SkinnedMeshRenderer smr = gameObjectCard.GetComponentInChildren<SkinnedMeshRenderer> ();
-				if (smr != null) {
-					Material[] newMaterials = { smr.materials [0], smr.materials [1], material };
-					smr.materials = newMaterials;
-				} 
-			}
-			gameObjectCard.name = retval.ToShortName ();
-			gameObjectCard.transform.localPosition = new Vector3 ();
-			return retval;
-		}
-
 		public Card[] SplitPileAtCard(Card card) {
 			Card[] retval = new Card[52];
 			int i = size -1;
@@ -237,10 +209,10 @@ namespace Solitaire
 				retval[ni] = cards[i];
 				i--;
 			}
-			if (cards [i].rank == card.rank && cards [i].suit == card.suit) {
+			if (cards[i].rank == card.rank && cards[i].suit == card.suit)
+			{
 				retval[++ni] = cards[i];
 			}
-
 			return retval;
 		}
     }

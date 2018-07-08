@@ -21,7 +21,7 @@ namespace Solitaire
 
 		private Card carringCard;
 		public Pile stockPile;
-
+		public float tapRadius;
 		public GameState gameState;
 
 		// Use this for initialization
@@ -195,8 +195,7 @@ namespace Solitaire
 		{
 
 			// single tap
-
-			if (card != null) {
+            if (card != null) {
 				tapStartTime = Time.time;
 				lastTapTarget = targets [0];
 				if (card.facingUp) { // only pickup face up cards
@@ -268,12 +267,43 @@ namespace Solitaire
 
 		GameObject GetClickedObject (out RaycastHit hit)
 		{
+			Debug.Log("Clicked");
 			GameObject target = null;
+            // Raycast
 			Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
-			if (Physics.Raycast (ray.origin, ray.direction * 10, out hit)) {
+			if (Physics.Raycast(ray.origin, ray.direction * 10, out hit))
+			{
 				target = hit.collider.gameObject;
 			}
 
+			if (target == null)
+			{
+				Vector3 center = Camera.main.ViewportToWorldPoint(Input.mousePosition);
+                Debug.Log("center at " + center);
+				// nearest object
+				Collider[] hitColliders = Physics.OverlapSphere(center, tapRadius);
+				int i = 0;
+				float shortestLength = float.MaxValue;
+				Debug.Log("found " + hitColliders.Length + " colliders");
+				while (i < hitColliders.Length)
+				{
+					// determine best object
+					GameObject go = hitColliders[i].gameObject;
+
+					float distance = Vector3.Distance(go.transform.position, center);
+					if (distance < shortestLength)
+					{
+						shortestLength = distance;
+						target = go;
+						Debug.Log("target distance " + distance + " target: " + target);
+					}
+					i++;
+				}
+			}
+			else
+			{
+				Debug.Log("raycast target found " + target);
+			}
 			return target;
 		}
 

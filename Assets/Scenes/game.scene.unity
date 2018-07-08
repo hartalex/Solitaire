@@ -218,6 +218,7 @@ MonoBehaviour:
   screenSpaces: []
   originPositions: []
   stockPile: {fileID: 517529820}
+  tapRadius: 1
   gameState: {fileID: 27479745}
 --- !u!1 &63264114
 GameObject:
@@ -247,8 +248,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6859643945750514aa7a666b0a6e3c05, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cardprefab: {fileID: 1759547555911772, guid: 5105ae4a42039a946abc0f9075f911a9, type: 2}
   initialized: 0
+  cardprefab: {fileID: 1759547555911772, guid: 5105ae4a42039a946abc0f9075f911a9, type: 2}
   materials:
   - {fileID: 2100000, guid: 40691d70ded3d7540baff3ecda750c12, type: 2}
   - {fileID: 2100000, guid: b82282bce78cb8d4e9ebea329ca1c168, type: 2}
@@ -1051,7 +1052,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee8976150981e9343bc3d205cf490ee8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cardprefab: {fileID: 1759547555911772, guid: 5105ae4a42039a946abc0f9075f911a9, type: 2}
 --- !u!1 &541224737
 GameObject:
   m_ObjectHideFlags: 0
@@ -1174,7 +1174,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d34a45d7d01f494382bc970215dac4e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cardprefab: {fileID: 1759547555911772, guid: 5105ae4a42039a946abc0f9075f911a9, type: 2}
 --- !u!1 &737892474
 GameObject:
   m_ObjectHideFlags: 0
@@ -1877,7 +1876,7 @@ MeshCollider:
   m_GameObject: {fileID: 1080558819}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Convex: 0
   m_CookingOptions: 14
@@ -2635,7 +2634,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d34a45d7d01f494382bc970215dac4e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cardprefab: {fileID: 1759547555911772, guid: 5105ae4a42039a946abc0f9075f911a9, type: 2}
 --- !u!1 &1792405892
 GameObject:
   m_ObjectHideFlags: 0
@@ -2921,7 +2919,7 @@ Camera:
     width: 1
     height: 1
   near clip plane: 0.3
-  far clip plane: 1000
+  far clip plane: 10
   field of view: 60
   orthographic: 0
   orthographic size: 5
@@ -3140,7 +3138,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d34a45d7d01f494382bc970215dac4e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cardprefab: {fileID: 1759547555911772, guid: 5105ae4a42039a946abc0f9075f911a9, type: 2}
 --- !u!4 &2084206011 stripped
 Transform:
   m_PrefabParentObject: {fileID: 4770258842505786, guid: 2b037b0bb60953e448f76dc611599b48,
