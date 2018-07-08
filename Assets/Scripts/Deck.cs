@@ -92,6 +92,7 @@ namespace Solitaire
             retval.suit = suit;
             retval.rank = rank;
             retval.facingUp = false;
+			gameObjectCard.layer = 9;
 
             MeshRenderer mr = gameObjectCard.GetComponentInChildren<MeshRenderer>();
             if (mr != null)

@@ -275,7 +275,7 @@ namespace Solitaire
 			{
 				target = hit.collider.gameObject;
 
-				if (target.layer == 8)
+				if (target.layer != 9)
 				{
 					Vector3 center = hit.point;
 
@@ -291,7 +291,7 @@ namespace Solitaire
 						GameObject go = hitColliders[i].gameObject;
 
 						float distance = Vector3.Distance(go.transform.position, center);
-						if (distance < shortestLength && go.layer != 8)
+						if (distance < shortestLength && go.layer == 9)
 						{
 							shortestLength = distance;
 							target = go;
