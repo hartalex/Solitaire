@@ -12,8 +12,7 @@ namespace Solitaire
 
 		}
 
-
-		public bool AddCard (Card card)
+        public bool AddCard (Card card)
 		{
 			bool retval = false;
 			return retval;
@@ -66,6 +65,28 @@ namespace Solitaire
 			}
 		}
 
+		public bool IsValidMove(Card card)
+        {
+            bool retval = false;
+            if (this.GetSize() == 0)
+            {
+                // Accept any King first
+                if (card.rank == Rank.King)
+                {
+                    retval = true;
+                }
+            }
+            else
+            {
+				Card topCard = GetCardFromTop();
+                if (topCard.GetColor() != card.GetColor() &&
+                    ((int)topCard.rank) - 1 == ((int)card.rank) && card.rank != Rank.Ace)
+                {
+                    retval = true;
+                }
+            }
+            return retval;
+        }
 		public void AddPile (Card[] newcards)
 		{
 			int i = 51;

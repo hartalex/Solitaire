@@ -47,10 +47,9 @@ namespace Solitaire
 			if (Input.GetMouseButtonDown (0) || (Input.touchCount > 0 && Input.GetTouch (0).phase == TouchPhase.Began)) {
 				//origin = transform.localPosition;
 				RaycastHit hitInfo;
-				targets [0] = GetClickedObject (out hitInfo);
+				targets [0] = GetNearestGameObject (out hitInfo, false);
 				if (targets [0] != null) {
-					Card card = targets [0].GetComponent<Card> ();
-
+					Card card = targets[0].GetComponent<Card>();
 					if (currentTime < doubleTapTimeFrame) {
 						// double tap
 						if (lastTapTarget == targets [0]) {
@@ -73,7 +72,7 @@ namespace Solitaire
 				if (Input.GetMouseButtonUp (0) || (Input.touchCount > 0 && Input.GetTouch (0).phase == TouchPhase.Ended)) {
 					_mouseState = false;
 					RaycastHit hitInfo;
-					GameObject droptarget = GetClickedObject (out hitInfo);
+					GameObject droptarget = GetNearestGameObject (out hitInfo, true);
 					if (droptarget != null && carringCard != null) {
 						Pile destPile = droptarget.GetComponentInParent<Pile> ();
 						Pile srcPile = carringCard.GetComponentInParent<Pile> ();
@@ -100,48 +99,28 @@ namespace Solitaire
 							// TableauPiles
 							TableauPile tp = destPile.GetComponent<TableauPile> ();
 							if (tp != null) {
-								if (tp.GetSize () == 0 && card.rank == Rank.King) {
-									tp.AddPile (srcPile.SplitPileAtCard (card));
-									card.Particle ();
-									card.Dropped ();
+								if (tp.IsValidMove(card))
+								{
+									tp.AddPile(srcPile.SplitPileAtCard(card));
+									card.Particle();
+									card.Dropped();
 									handled = true;
 									int ii = 0;
-									while (targets [ii] != null) {
-										Card cardTarget = targets [ii].GetComponent<Card> ();
-										if (cardTarget != null) {
-											cardTarget.Dropped ();
+									while (targets[ii] != null)
+									{
+										Card cardTarget = targets[ii].GetComponent<Card>();
+										if (cardTarget != null)
+										{
+											cardTarget.Dropped();
 										}
-										Collider col = targets [ii].GetComponent<Collider> ();
-										if (col != null) {
+										Collider col = targets[ii].GetComponent<Collider>();
+										if (col != null)
+										{
 											col.enabled = true;
 										}
 										ii++;
 									}
-								} else if (tp.GetSize () > 0) {
-									Card topCard = tp.GetCardFromTop ();
-									if (topCard.GetColor () != card.GetColor () &&
-									    ((int)topCard.rank) - 1 == ((int)card.rank) && card.rank != Rank.Ace) {
-
-										tp.AddPile (srcPile.SplitPileAtCard (card));
-										card.Particle ();
-										card.Dropped ();
-
-										handled = true;
-										int ii = 0;
-										while (targets [ii] != null) {
-											Card cardTarget = targets [ii].GetComponent<Card> ();
-											if (cardTarget != null) {
-												cardTarget.Dropped ();
-											}
-											Collider col = targets [ii].GetComponent<Collider> ();
-											if (col != null) {
-												col.enabled = true;
-											}
-											ii++;
-										}
-									}
 								}
-
 							}
 
 							if (!handled) {
@@ -264,7 +243,7 @@ namespace Solitaire
 			}
 		}
 
-		GameObject GetClickedObject (out RaycastHit hit)
+		GameObject GetNearestGameObject(out RaycastHit hit, bool isDrop)
 		{
 			Debug.Log("Clicked");
 			GameObject target = null;
@@ -274,7 +253,7 @@ namespace Solitaire
 			{
 				target = hit.collider.gameObject;
 
-				if (target.layer != 9)
+				if (target.layer != 9 && target.layer != 10)
 				{
 					Vector3 center = hit.point;
 
@@ -290,7 +269,7 @@ namespace Solitaire
 						GameObject go = hitColliders[i].gameObject;
 
 						float distance = Vector3.Distance(go.transform.position, center);
-						if (distance < shortestLength && go.layer == 9)
+						if (distance < shortestLength && (go.layer == 9 || (isDrop && go.layer == 10)))
 						{
 							shortestLength = distance;
 							target = go;
