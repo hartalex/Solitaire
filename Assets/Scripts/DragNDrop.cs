@@ -198,8 +198,7 @@ namespace Solitaire
             if (card != null) {
 				tapStartTime = Time.time;
 				lastTapTarget = targets [0];
-				if (card.facingUp) { // only pickup face up cards
-
+				if (card.facingUp) { // only pickup face up card
 					TableauPile srcPile = card.GetComponentInParent<TableauPile> ();
 					if (srcPile != null) {
 						Card[] multipleCards = srcPile.GetPileAtCard (card);
