@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Solitaire
 {
@@ -9,7 +10,8 @@ namespace Solitaire
     {
 		public bool initialized = false;
 		public GameObject cardprefab = null;
-
+		public Text heightText;
+		public HeightDirection direction;
 		public Material[] materials;
 		public Deck() : base() {}
 
@@ -70,7 +72,12 @@ namespace Solitaire
 				this.AddCardToTop(CreateCard(Suit.Spade, Rank.Jack, materials[49]), true);
 				this.AddCardToTop(CreateCard(Suit.Spade, Rank.Queen, materials[50]), true);
 				this.AddCardToTop(CreateCard(Suit.Spade, Rank.King, materials[51]), true);
-				//this.Shuffle ();
+
+				// Set MaxHeightUI Text Element
+				if (heightText != null) {
+					StaticMaxHeight.uiText = heightText;
+					StaticMaxHeight.direction = direction;
+				}
 				initialized = true;
 			}
 		}
@@ -111,7 +118,8 @@ namespace Solitaire
             }
             gameObjectCard.name = retval.ToShortName();
             gameObjectCard.transform.localPosition = new Vector3();
-            return retval;
+
+			return retval;
         }
 
     }

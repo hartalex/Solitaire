@@ -245,7 +245,6 @@ namespace Solitaire
 
 		GameObject GetNearestGameObject(out RaycastHit hit, bool isDrop)
 		{
-			Debug.Log("Clicked");
 			GameObject target = null;
             // Raycast
 			Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
@@ -257,12 +256,10 @@ namespace Solitaire
 				{
 					Vector3 center = hit.point;
 
-					Debug.Log("center at " + center);
 					// nearest object
 					Collider[] hitColliders = Physics.OverlapSphere(center, tapRadius);
 					int i = 0;
 					float shortestLength = float.MaxValue;
-					Debug.Log("found " + hitColliders.Length + " colliders");
 					while (i < hitColliders.Length)
 					{
 						// determine best object
